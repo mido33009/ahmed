@@ -1,0 +1,908 @@
+/* ===================================
+   AAD RENTAL CARS - MAIN STYLESHEET
+   =================================== */
+
+:root {
+  --gold-50: #fefce8;
+  --gold-400: #facc15;
+  --gold-500: #eab308;
+  --gold-600: #ca8a04;
+  --dark-950: #050505;
+  --dark-900: #0a0a0a;
+  --dark-800: #171717;
+  --dark-700: #262626;
+  --dark-600: #404040;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', 'Cairo', sans-serif;
+  background-color: var(--dark-950);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* ===================================
+   HEADER / NAVBAR STYLES
+   =================================== */
+
+header.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(5, 5, 5, 0.82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.875rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo Container */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.site-logo {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.site-logo:hover {
+  transform: scale(1.05);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand-title {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.brand-subtitle {
+  color: var(--gold-400);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Navigation Links */
+nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+nav a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ccc;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: var(--gold-400);
+}
+
+/* Brands Dropdown */
+.relative.group {
+  position: relative;
+}
+
+.relative.group button {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ccc;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.relative.group button:hover {
+  color: var(--gold-400);
+}
+
+.relative.group > div {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 192px;
+  background: var(--dark-900);
+  border: 1px solid var(--dark-700);
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  display: none;
+  z-index: 50;
+}
+
+.relative.group:hover > div {
+  display: block;
+}
+
+.relative.group a {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: #ccc;
+  transition: all 0.3s ease;
+}
+
+.relative.group a:hover {
+  color: var(--gold-400);
+  background-color: var(--dark-800);
+}
+
+/* Language Selector & Quick Actions */
+#lang-select {
+  background-color: var(--dark-800);
+  border: 1px solid var(--dark-700);
+  color: var(--gold-400);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#lang-select:hover,
+#lang-select:focus {
+  border-color: var(--gold-500);
+  outline: none;
+}
+
+.whatsapp-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #25d366 0%, #20ba58 100%);
+  border-radius: 0.75rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -2px rgba(37, 211, 102, 0.3);
+}
+
+/* Mobile Menu Toggle */
+#mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+#mobile-menu-btn:hover {
+  color: #fff;
+}
+
+/* Mobile Menu */
+#mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#mobile-menu a {
+  display: block;
+  padding: 0.75rem 0;
+  color: #ccc;
+  font-weight: 500;
+  border-bottom: 1px solid var(--dark-800);
+  transition: color 0.3s ease;
+}
+
+#mobile-menu a:hover {
+  color: var(--gold-400);
+}
+
+/* ===================================
+   HERO SECTION
+   =================================== */
+
+.hero-gradient {
+  background: linear-gradient(to bottom, rgba(5, 5, 5, 0.5), rgba(5, 5, 5, 0.95)),
+    url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80')
+    center/cover no-repeat;
+}
+
+.hero-gradient h1 {
+  font-family: 'Playfair Display', serif;
+}
+
+/* ===================================
+   GRADIENT TEXT
+   =================================== */
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fefce8 0%, #eab308 50%, #ca8a04 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===================================
+   BUTTONS
+   =================================== */
+
+.gold-btn {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  color: #000;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.gold-btn:hover {
+  background: linear-gradient(135deg, #facc15 0%, #d97706 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(234, 179, 8, 0.3);
+}
+
+.gold-btn:active {
+  transform: translateY(0);
+}
+
+/* ===================================
+   CARDS & HOVER EFFECTS
+   =================================== */
+
+.card-hover {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+  border-color: rgba(234, 179, 8, 0.5);
+  box-shadow: 0 20px 30px -10px rgba(234, 179, 8, 0.15);
+}
+
+/* ===================================
+   CAR CARDS
+   =================================== */
+
+#fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.car-card {
+  background: rgba(23, 23, 23, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.car-card:hover {
+  border-color: rgba(234, 179, 8, 0.5);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 30px -10px rgba(234, 179, 8, 0.15);
+}
+
+.car-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: linear-gradient(135deg, var(--dark-800) 0%, var(--dark-700) 100%);
+}
+
+.car-info {
+  padding: 1.5rem;
+}
+
+.car-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.car-brand {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold-400);
+  font-weight: 700;
+}
+
+.car-price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.car-name {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+}
+
+.car-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin: 1rem 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.car-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.car-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.car-btn {
+  flex: 1;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.car-btn.primary {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  color: #000;
+}
+
+.car-btn.primary:hover {
+  background: linear-gradient(135deg, #facc15 0%, #d97706 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -2px rgba(234, 179, 8, 0.2);
+}
+
+.car-btn.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.car-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(234, 179, 8, 0.5);
+  color: var(--gold-400);
+}
+
+/* ===================================
+   MARQUEE ANIMATION
+   =================================== */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ===================================
+   CATEGORY BUTTONS
+   =================================== */
+
+.cat-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cat-btn.active {
+  background: var(--gold-500);
+  color: #000;
+  box-shadow: 0 8px 16px -2px rgba(234, 179, 8, 0.3);
+}
+
+.cat-btn:not(.active) {
+  background: var(--dark-800);
+  color: #ccc;
+  border: 1px solid var(--dark-700);
+}
+
+.cat-btn:not(.active):hover {
+  background: var(--dark-700);
+  color: var(--gold-400);
+  border-color: var(--gold-500);
+}
+
+/* ===================================
+   MODALS
+   =================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--dark-900);
+  border: 1px solid var(--dark-700);
+  border-radius: 1.875rem;
+  padding: 2rem;
+  max-width: 28rem;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+  color: #fff;
+}
+
+/* ===================================
+   FORMS
+   =================================== */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+form label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #999;
+  margin-bottom: 0.5rem;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  background-color: var(--dark-800);
+  border: 1px solid var(--dark-700);
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  outline: none;
+  border-color: var(--gold-500);
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1);
+}
+
+form input::placeholder {
+  color: #666;
+}
+
+form textarea {
+  resize: vertical;
+}
+
+/* ===================================
+   TOAST NOTIFICATION
+   =================================== */
+
+#toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  background: var(--dark-800);
+  border: 1px solid rgba(234, 179, 8, 0.5);
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transform: translateY(32px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+#toast.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===================================
+   FLOATING WHATSAPP BUTTON
+   =================================== */
+
+.floating-whatsapp {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 40;
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 24px -2px rgba(37, 211, 102, 0.4);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.floating-whatsapp:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 32px -4px rgba(37, 211, 102, 0.6);
+}
+
+/* ===================================
+   FOOTER
+   =================================== */
+
+footer {
+  background: var(--dark-950);
+  border-top: 1px solid var(--dark-800);
+  padding: 3rem 1.5rem;
+}
+
+footer .footer-content {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+footer .footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+footer .footer-logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--gold-500) 0%, #b8860b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: 800;
+  font-size: 1rem;
+  font-family: 'Playfair Display', serif;
+}
+
+footer .footer-text {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  flex: 1;
+}
+
+footer .admin-btn {
+  font-size: 0.75rem;
+  color: #999;
+  background: var(--dark-900);
+  border: 1px solid var(--dark-700);
+  padding: 0.625rem 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+footer .admin-btn:hover {
+  color: var(--gold-400);
+  border-color: var(--gold-500);
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
+@media (max-width: 1024px) {
+  nav {
+    gap: 1.5rem;
+  }
+
+  nav a {
+    font-size: 0.8rem;
+  }
+
+  #fleet-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  header.navbar {
+    padding: 0.75rem 1rem;
+  }
+
+  .brand-title {
+    font-size: 18px;
+  }
+
+  .brand-subtitle {
+    font-size: 10px;
+  }
+
+  .site-logo {
+    height: 40px;
+  }
+
+  nav {
+    display: none;
+  }
+
+  #mobile-menu-btn {
+    display: block;
+  }
+
+  #mobile-menu {
+    display: flex;
+  }
+
+  #mobile-menu.hidden {
+    display: none;
+  }
+
+  .hidden.md\:flex {
+    display: none !important;
+  }
+
+  #fleet-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .car-card {
+    border-radius: 1rem;
+  }
+
+  .car-name {
+    font-size: 1.2rem;
+  }
+
+  .car-price {
+    font-size: 1.1rem;
+  }
+
+  .modal-content {
+    max-width: calc(100% - 2rem);
+    padding: 1.5rem;
+  }
+
+  .floating-whatsapp {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  footer .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  footer .footer-text {
+    order: 3;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  header.navbar {
+    padding: 0.625rem 0.75rem;
+  }
+
+  .brand-title {
+    font-size: 16px;
+  }
+
+  .brand-subtitle {
+    font-size: 9px;
+    letter-spacing: 0.8px;
+  }
+
+  .site-logo {
+    height: 36px;
+  }
+
+  .car-image {
+    height: 180px;
+  }
+
+  .car-name {
+    font-size: 1.1rem;
+  }
+
+  .car-actions {
+    flex-direction: column;
+  }
+
+  .car-btn {
+    width: 100%;
+  }
+
+  .gold-btn {
+    width: 100%;
+  }
+
+  .modal-content {
+    padding: 1rem;
+  }
+
+  #toast {
+    width: calc(100% - 2rem);
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+  }
+}
+
+/* ===================================
+   UTILITY CLASSES
+   =================================== */
+
+.hidden {
+  display: none !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
