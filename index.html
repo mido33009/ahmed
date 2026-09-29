@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Inter & Playfair Display -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -30,8 +30,8 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'Cairo', 'sans-serif'],
+                        serif: ['Playfair Display', 'Cairo', 'serif'],
                     }
                 }
             }
@@ -39,7 +39,7 @@
     </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Cairo', sans-serif;
             background-color: #050505;
             color: #f5f5f5;
         }
@@ -68,6 +68,19 @@
             border-color: rgba(234, 179, 8, 0.5);
             box-shadow: 0 20px 30px -10px rgba(234, 179, 8, 0.15);
         }
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 20s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body class="bg-dark-950 text-gray-100 antialiased selection:bg-gold-500 selection:text-black">
@@ -76,404 +89,686 @@
     <header class="fixed top-0 left-0 right-0 z-50 bg-dark-900/90 backdrop-blur-md border-b border-dark-700/60 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Brand Logo -->
-            <a href="#" class="flex items-center gap-3 group">
+            <a href="#" onclick="showSection('home')" class="flex items-center gap-3 group">
                 <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-gold-500 to-amber-700 flex items-center justify-center text-black font-extrabold text-xl font-serif shadow-lg group-hover:scale-105 transition-transform">
                     AAD
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-serif text-xl font-bold tracking-wider text-white">AAD <span class="text-gold-500 font-sans font-light text-xs tracking-widest block uppercase">Rental Cars</span></span>
+                    <span class="font-serif text-xl font-bold tracking-wider text-white">AAD <span class="text-gold-500 font-sans font-light text-xs tracking-widest block uppercase" data-i18n="brand_subtitle">Rental Cars</span></span>
                 </div>
             </a>
 
             <!-- Desktop Nav Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
-                <a href="#fleet" class="hover:text-gold-400 transition-colors">Our Fleet</a>
-                <a href="#categories" class="hover:text-gold-400 transition-colors">Categories</a>
-                <a href="#why-us" class="hover:text-gold-400 transition-colors">Why AAD</a>
-                <a href="#testimonials" class="hover:text-gold-400 transition-colors">Reviews</a>
-                <a href="#contact" class="hover:text-gold-400 transition-colors">Contact</a>
+                <a href="#home" onclick="showSection('home')" class="hover:text-gold-400 transition-colors" data-i18n="nav_home">Home</a>
+                <a href="#fleet" onclick="showSection('home'); filterCategory('all')" class="hover:text-gold-400 transition-colors" data-i18n="nav_fleet">Our Fleet</a>
+                
+                <!-- Brands Dropdown -->
+                <div class="relative group py-2">
+                    <button class="flex items-center gap-1.5 hover:text-gold-400 transition-colors focus:outline-none">
+                        <span data-i18n="nav_brands">Brands</span> <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div class="absolute top-full left-0 w-48 bg-dark-900 border border-dark-700 rounded-xl shadow-2xl py-2 hidden group-hover:block z-50">
+                        <a href="#" onclick="filterByBrand('Lamborghini')" class="block px-4 py-2 text-xs text-gray-300 hover:text-gold-400 hover:bg-dark-800">Lamborghini</a>
+                        <a href="#" onclick="filterByBrand('Ferrari')" class="block px-4 py-2 text-xs text-gray-300 hover:text-gold-400 hover:bg-dark-800">Ferrari</a>
+                        <a href="#" onclick="filterByBrand('Rolls Royce')" class="block px-4 py-2 text-xs text-gray-300 hover:text-gold-400 hover:bg-dark-800">Rolls Royce</a>
+                        <a href="#" onclick="filterByBrand('Mercedes')" class="block px-4 py-2 text-xs text-gray-300 hover:text-gold-400 hover:bg-dark-800">Mercedes AMG</a>
+                        <a href="#" onclick="filterByBrand('Nissan')" class="block px-4 py-2 text-xs text-gray-300 hover:text-gold-400 hover:bg-dark-800">Nissan GT-R</a>
+                        <a href="#" onclick="filterByBrand('Ford')" class="block px-4 py-2 text-xs text-gray-300 hover:text-gold-400 hover:bg-dark-800">Ford Mustang</a>
+                        <a href="#" onclick="filterByBrand('Audi')" class="block px-4 py-2 text-xs text-gray-300 hover:text-gold-400 hover:bg-dark-800">Audi RS</a>
+                        <a href="#" onclick="filterByBrand('Cadillac')" class="block px-4 py-2 text-xs text-gray-300 hover:text-gold-400 hover:bg-dark-800">Cadillac Escalade</a>
+                    </div>
+                </div>
+
+                <a href="#why-us" onclick="showSection('home')" class="hover:text-gold-400 transition-colors" data-i18n="nav_why">Why AAD</a>
+                <a href="#testimonials" onclick="showSection('home')" class="hover:text-gold-400 transition-colors" data-i18n="nav_reviews">Reviews</a>
+                <a href="#contact" onclick="showSection('home')" class="hover:text-gold-400 transition-colors" data-i18n="nav_contact">Contact</a>
             </nav>
 
-            <!-- Quick Action Buttons -->
+            <!-- Quick Action & Language Switcher -->
             <div class="hidden lg:flex items-center gap-4">
-                <a href="https://wa.me/971501234567?text=Hello%2C%20I%20would%20like%20to%20rent%20a%20car%20from%20AAD%20Rental%20Cars." target="_blank" class="flex items-center gap-2 text-xs font-semibold bg-green-600/20 text-green-400 border border-green-500/30 px-4 py-2.5 rounded-full hover:bg-green-600 hover:text-white transition-all">
+                <!-- Language Switcher -->
+                <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-dark-800 border border-dark-700 text-gold-400 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none focus:border-gold-500 cursor-pointer">
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                    <option value="ru">Русский</option>
+                </select>
+
+                <a href="https://wa.me/971523922504?text=Hello%2C%20I%20would%20like%20to%20rent%20a%20car%20from%20AAD%20Rental%20Cars." target="_blank" class="flex items-center gap-2 text-xs font-semibold bg-green-600/20 text-green-400 border border-green-500/30 px-4 py-2.5 rounded-full hover:bg-green-600 hover:text-white transition-all">
                     <i class="fa-brands fa-whatsapp text-base"></i> +971 52 392 2504
-                </a>
-                <a href="#fleet" class="gold-btn text-black font-semibold text-xs px-5 py-2.5 rounded-full uppercase tracking-wider">
-                    Book Now
                 </a>
             </div>
 
             <!-- Mobile Menu Toggle -->
-            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none p-2">
-                <i class="fa-solid fa-bars text-2xl"></i>
-            </button>
+            <div class="flex items-center gap-2 md:hidden">
+                <select onchange="changeLanguage(this.value)" class="bg-dark-800 border border-dark-700 text-gold-400 text-xs font-semibold rounded-lg px-2 py-1.5 focus:outline-none">
+                    <option value="en">EN</option>
+                    <option value="ar">AR</option>
+                    <option value="ru">RU</option>
+                </select>
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white focus:outline-none p-2">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-dark-900 border-b border-dark-700 px-4 pt-2 pb-6 space-y-4">
-            <a href="#fleet" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800">Our Fleet</a>
-            <a href="#categories" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800">Categories</a>
-            <a href="#why-us" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800">Why AAD</a>
-            <a href="#testimonials" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800">Reviews</a>
-            <a href="#contact" class="block py-2 text-gray-300 hover:text-gold-400 font-medium">Contact</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-900 border-b border-dark-700 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" onclick="showSection('home'); toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800" data-i18n="nav_home">Home</a>
+            <a href="#fleet" onclick="showSection('home'); toggleMobileMenu(); filterCategory('all')" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800" data-i18n="nav_fleet">Our Fleet</a>
+            <div class="py-2 border-b border-dark-800 text-gray-300 font-medium">
+                <span class="text-xs text-gold-500 uppercase tracking-widest block mb-1" data-i18n="nav_brands">Brands</span>
+                <div class="grid grid-cols-2 gap-2 pl-2 pt-1 text-xs">
+                    <a href="#" onclick="filterByBrand('Lamborghini'); toggleMobileMenu()" class="py-1 hover:text-gold-400">Lamborghini</a>
+                    <a href="#" onclick="filterByBrand('Ferrari'); toggleMobileMenu()" class="py-1 hover:text-gold-400">Ferrari</a>
+                    <a href="#" onclick="filterByBrand('Rolls Royce'); toggleMobileMenu()" class="py-1 hover:text-gold-400">Rolls Royce</a>
+                    <a href="#" onclick="filterByBrand('Nissan'); toggleMobileMenu()" class="py-1 hover:text-gold-400">Nissan GT-R</a>
+                    <a href="#" onclick="filterByBrand('Ford'); toggleMobileMenu()" class="py-1 hover:text-gold-400">Ford Mustang</a>
+                    <a href="#" onclick="filterByBrand('Audi'); toggleMobileMenu()" class="py-1 hover:text-gold-400">Audi RS</a>
+                </div>
+            </div>
+            <a href="#why-us" onclick="showSection('home'); toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800" data-i18n="nav_why">Why AAD</a>
+            <a href="#testimonials" onclick="showSection('home'); toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800" data-i18n="nav_reviews">Reviews</a>
+            <a href="#contact" onclick="showSection('home'); toggleMobileMenu()" class="block py-2 text-gray-300 hover:text-gold-400 font-medium border-b border-dark-800" data-i18n="nav_contact">Contact</a>
             <div class="pt-2 flex flex-col gap-3">
-                <a href="https://wa.me/971501234567?text=Hello%2C%20I%20would%20like%20to%20rent%20a%20car%20from%20AAD%20Rental%20Cars." target="_blank" class="flex items-center justify-center gap-2 text-sm font-semibold bg-green-600 text-white px-4 py-3 rounded-xl">
+                <a href="https://wa.me/971523922504?text=Hello%2C%20I%20would%20like%20to%20rent%20a%20car%20from%20AAD%20Rental%20Cars." target="_blank" class="flex items-center justify-center gap-2 text-sm font-semibold bg-green-600 text-white px-4 py-3 rounded-xl">
                     <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp Booking
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 hero-gradient">
-        <div class="max-w-5xl mx-auto text-center z-10 space-y-8">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800/80 border border-gold-500/30 text-gold-400 text-xs sm:text-sm tracking-widest uppercase backdrop-blur-md">
-                <i class="fa-solid fa-crown text-gold-400"></i> Dubai's Premier Luxury & Exotic Car Rental
-            </div>
-            
-            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-white leading-tight">
-                Experience Ultimate Luxury With <span class="gold-gradient-text">AAD Rental Cars</span>
-            </h1>
+    <!-- Floating Quick WhatsApp Button (Bottom Right) -->
+    <a href="https://wa.me/971523922504?text=Hello%2C%20I%20would%20like%20to%20rent%20a%20luxury%20car." target="_blank" class="fixed bottom-6 right-6 z-40 bg-green-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:bg-green-600 hover:scale-110 transition-all animate-bounce" title="Chat via WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
-            <p class="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto font-light">
-                Drive the world's most prestigious supercars, SUVs, and luxury sedans. Free delivery & pickup, 24/7 VIP concierge service.
-            </p>
+    <!-- Main Container / Views switcher -->
+    <main id="main-view-container">
 
-            <!-- Search / Quick Filter Bar -->
-            <div class="bg-dark-900/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-dark-700 shadow-2xl max-w-4xl mx-auto text-left grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Select Category</label>
-                    <select id="hero-category-select" class="w-full bg-dark-800 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
-                        <option value="all">All Categories</option>
-                        <option value="supercar">Supercars</option>
-                        <option value="luxury-suv">Luxury SUVs</option>
-                        <option value="sedan">Executive Sedans</option>
-                        <option value="sports">Sports Cars</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Search Model</label>
-                    <input type="text" id="hero-search-input" placeholder="e.g. Lamborghini, Ferrari..." class="w-full bg-dark-800 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500 placeholder-gray-500">
-                </div>
-                <div class="flex items-end">
-                    <button onclick="filterFleetFromHero()" class="w-full gold-btn text-black font-bold uppercase tracking-wider py-3 px-6 rounded-xl text-sm transition-all shadow-lg flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-magnifying-glass"></i> Find Your Ride
-                    </button>
-                </div>
-            </div>
-
-            <!-- Stats Bar -->
-            <div class="pt-8 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-dark-700/60 max-w-4xl mx-auto">
-                <div class="text-center">
-                    <div class="text-2xl sm:text-3xl font-bold font-serif gold-gradient-text">50+</div>
-                    <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">Exotic Fleet</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-2xl sm:text-3xl font-bold font-serif gold-gradient-text">24/7</div>
-                    <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">VIP Support</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-2xl sm:text-3xl font-bold font-serif gold-gradient-text">0 AED</div>
-                    <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">Deposit Options</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-2xl sm:text-3xl font-bold font-serif gold-gradient-text">100%</div>
-                    <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">Insured Vehicles</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Filter Tabs -->
-    <section id="categories" class="py-12 bg-dark-900 border-y border-dark-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-xs font-semibold text-gold-500 uppercase tracking-widest mb-2">Explore By Class</h2>
-            <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white mb-8">Our Exclusive Car Categories</h3>
-            
-            <div class="flex flex-wrap justify-center gap-3" id="category-filters">
-                <button onclick="filterCategory('all')" class="cat-btn active px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-gold-500 text-black shadow-lg shadow-gold-500/20">
-                    All Vehicles
-                </button>
-                <button onclick="filterCategory('supercar')" class="cat-btn px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-dark-800 text-gray-300 hover:bg-dark-700 border border-dark-700">
-                    Supercars
-                </button>
-                <button onclick="filterCategory('luxury-suv')" class="cat-btn px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-dark-800 text-gray-300 hover:bg-dark-700 border border-dark-700">
-                    Luxury SUVs
-                </button>
-                <button onclick="filterCategory('sedan')" class="cat-btn px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-dark-800 text-gray-300 hover:bg-dark-700 border border-dark-700">
-                    Executive Sedans
-                </button>
-                <button onclick="filterCategory('sports')" class="cat-btn px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-dark-800 text-gray-300 hover:bg-dark-700 border border-dark-700">
-                    Sports Cars
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Fleet Showcase -->
-    <section id="fleet" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-                <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest">AAD Fleet Catalog</span>
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">Choose Your Dream Car</h2>
-            </div>
-            <div class="mt-4 md:mt-0 text-gray-400 text-sm">
-                Showing <span id="car-count" class="text-gold-400 font-bold">8</span> luxury models available for instant booking
-            </div>
-        </div>
-
-        <!-- Cars Grid -->
-        <div id="fleet-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Dynamically populated via JavaScript -->
-        </div>
-
-        <!-- No results message -->
-        <div id="no-results" class="hidden text-center py-20">
-            <div class="w-16 h-16 bg-dark-800 rounded-full flex items-center justify-center mx-auto text-gold-500 text-2xl mb-4">
-                <i class="fa-solid fa-car-side"></i>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">No matching vehicles found</h3>
-            <p class="text-gray-400 text-sm">Try searching for a different model or resetting your filter category.</p>
-            <button onclick="filterCategory('all')" class="mt-6 gold-btn text-black font-semibold px-6 py-2.5 rounded-xl text-sm">View All Cars</button>
-        </div>
-    </section>
-
-    <!-- Why AAD Rental Cars -->
-    <section id="why-us" class="py-20 bg-dark-900 border-t border-dark-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest">The AAD Advantage</span>
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-2">Why Rent With AAD Rental Cars?</h2>
-                <p class="text-gray-400 text-sm sm:text-base mt-4">We redefine luxury car rental with unmatched customer care, pristine vehicles, and transparent pricing.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-dark-800/60 p-8 rounded-2xl border border-dark-700/80 hover:border-gold-500/40 transition-all">
-                    <div class="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-2xl mb-6">
-                        <i class="fa-solid fa-truck-fast"></i>
+        <!-- HOME VIEW -->
+        <div id="view-home" class="page-view">
+            <!-- Hero Section -->
+            <section class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 hero-gradient">
+                <div class="max-w-5xl mx-auto text-center z-10 space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800/80 border border-gold-500/30 text-gold-400 text-xs sm:text-sm tracking-widest uppercase backdrop-blur-md">
+                        <i class="fa-solid fa-crown text-gold-400"></i> <span data-i18n="hero_badge">Dubai's Premier Luxury & Exotic Car Rental</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3 font-serif">Free Delivery & Pickup</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">We deliver your chosen luxury car directly to your hotel, residence, or airport terminal on time, absolutely free of charge.</p>
-                </div>
+                    
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-white leading-tight">
+                        <span data-i18n="hero_title_1">Experience Ultimate Luxury With</span> <span class="gold-gradient-text">AAD Rental Cars</span>
+                    </h1>
 
-                <!-- Feature 2 -->
-                <div class="bg-dark-800/60 p-8 rounded-2xl border border-dark-700/80 hover:border-gold-500/40 transition-all">
-                    <div class="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-2xl mb-6">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3 font-serif">Comprehensive Insurance</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Drive with absolute peace of mind. All our supercars and luxury fleets come with comprehensive insurance coverage.</p>
-                </div>
+                    <p class="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto font-light" data-i18n="hero_desc">
+                        Drive the world's most prestigious supercars, SUVs, and luxury sedans. Free delivery & pickup, 24/7 VIP concierge service.
+                    </p>
 
-                <!-- Feature 3 -->
-                <div class="bg-dark-800/60 p-8 rounded-2xl border border-dark-700/80 hover:border-gold-500/40 transition-all">
-                    <div class="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-2xl mb-6">
-                        <i class="fa-solid fa-headset"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3 font-serif">24/7 VIP Concierge</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Our dedicated support team is available around the clock via phone and WhatsApp to assist you with any request.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest">Client Reviews</span>
-            <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-2">What Our VIP Clients Say</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-dark-900 p-8 rounded-2xl border border-dark-800 relative">
-                <div class="text-gold-500 mb-4 flex gap-1">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </div>
-                <p class="text-gray-300 text-sm italic mb-6">"Renting the Lamborghini Huracan EVO from AAD Rental Cars was seamless! The car was delivered sparkling clean to my hotel in pristine condition. Highly recommended!"</p>
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 font-bold flex items-center justify-center">AK</div>
-                    <div>
-                        <div class="text-sm font-bold text-white">Alexander K.</div>
-                        <div class="text-xs text-gray-500">Verified Client from London</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-dark-900 p-8 rounded-2xl border border-dark-800 relative">
-                <div class="text-gold-500 mb-4 flex gap-1">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </div>
-                <p class="text-gray-300 text-sm italic mb-6">"AAD's WhatsApp booking is instant and very professional. Got the Rolls Royce Cullinan for a family event and everything was handled with absolute VIP perfection."</p>
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 font-bold flex items-center justify-center">MS</div>
-                    <div>
-                        <div class="text-sm font-bold text-white">Mohammed S.</div>
-                        <div class="text-xs text-gray-500">Verified Client from Dubai</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-dark-900 p-8 rounded-2xl border border-dark-800 relative">
-                <div class="text-gold-500 mb-4 flex gap-1">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </div>
-                <p class="text-gray-300 text-sm italic mb-6">"Best exotic car rental agency by far. Transparent prices, no hidden fees, and wonderful customer support. Will always rent from AAD!"</p>
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 font-bold flex items-center justify-center">JD</div>
-                    <div>
-                        <div class="text-sm font-bold text-white">Jessica D.</div>
-                        <div class="text-xs text-gray-500">Verified Client from Paris</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact / Booking Inquiry Section -->
-    <section id="contact" class="py-20 bg-dark-900 border-t border-dark-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest">Get In Touch</span>
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-2 mb-6">Ready To Drive Your Dream Car?</h2>
-                <p class="text-gray-400 text-sm leading-relaxed mb-8">
-                    Contact our VIP concierge team instantly via WhatsApp or fill out the inquiry form. We respond within minutes to secure your booking.
-                </p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-dark-800 border border-dark-700 flex items-center justify-center text-gold-400 text-xl">
-                            <i class="fa-solid fa-phone"></i>
-                        </div>
+                    <!-- Search / Quick Filter Bar -->
+                    <div class="bg-dark-900/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-dark-700 shadow-2xl max-w-4xl mx-auto text-left grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
-                            <div class="text-xs text-gray-400 uppercase tracking-wider">Call / WhatsApp</div>
-                            <div class="text-base font-bold text-white">+971 50 123 4567</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-dark-800 border border-dark-700 flex items-center justify-center text-gold-400 text-xl">
-                            <i class="fa-solid fa-envelope"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs text-gray-400 uppercase tracking-wider">Email Us</div>
-                            <div class="text-base font-bold text-white">vip@aadrentalcars.ae</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-dark-800 border border-dark-700 flex items-center justify-center text-gold-400 text-xl">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs text-gray-400 uppercase tracking-wider">Showroom Location</div>
-                            <div class="text-base font-bold text-white">Sheikh Zayed Road, Dubai, UAE</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Inquiry Form -->
-            <div class="bg-dark-800 p-8 rounded-3xl border border-dark-700 shadow-2xl">
-                <h3 class="text-2xl font-serif font-bold text-white mb-6">Quick Reservation Inquiry</h3>
-                <form id="inquiry-form" onsubmit="handleInquiry(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Full Name</label>
-                        <input type="text" id="inquiry-name" required placeholder="John Doe" class="w-full bg-dark-900 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Phone / WhatsApp</label>
-                            <input type="text" id="inquiry-phone" required placeholder="+971 50 ..." class="w-full bg-dark-900 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Select Car</label>
-                            <select id="inquiry-car" class="w-full bg-dark-900 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
-                                <option value="Lamborghini Huracan EVO">Lamborghini Huracan EVO</option>
-                                <option value="Ferrari F8 Spider">Ferrari F8 Spider</option>
-                                <option value="Rolls Royce Cullinan">Rolls Royce Cullinan</option>
-                                <option value="Mercedes G63 AMG">Mercedes G63 AMG</option>
-                                <option value="Porsche 911 Turbo S">Porsche 911 Turbo S</option>
-                                <option value="Bentley Continental GT">Bentley Continental GT</option>
-                                <option value="Range Rover Sport">Range Rover Sport</option>
-                                <option value="BMW M8 Competition">BMW M8 Competition</option>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1" data-i18n="search_cat_label">Select Category</label>
+                            <select id="hero-category-select" class="w-full bg-dark-800 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                                <option value="all" data-i18n="cat_all">All Categories</option>
+                                <option value="supercar" data-i18n="cat_supercar">Supercars</option>
+                                <option value="luxury-suv" data-i18n="cat_suv">Luxury SUVs</option>
+                                <option value="sedan" data-i18n="cat_sedan">Executive Sedans</option>
+                                <option value="sports" data-i18n="cat_sports">Sports Cars</option>
                             </select>
                         </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1" data-i18n="search_model_label">Search Model</label>
+                            <input type="text" id="hero-search-input" placeholder="e.g. Lamborghini, Nissan..." class="w-full bg-dark-800 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500 placeholder-gray-500">
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="filterFleetFromHero()" class="w-full gold-btn text-black font-bold uppercase tracking-wider py-3 px-6 rounded-xl text-sm transition-all shadow-lg flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="search_btn">Find Your Ride</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stats Bar -->
+                    <div class="pt-8 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-dark-700/60 max-w-4xl mx-auto">
+                        <div class="text-center">
+                            <div class="text-2xl sm:text-3xl font-bold font-serif gold-gradient-text">35+</div>
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mt-1" data-i18n="stat_fleet">Exotic Fleet</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl sm:text-3xl font-bold font-serif gold-gradient-text">24/7</div>
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mt-1" data-i18n="stat_support">VIP Support</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl sm:text-3xl font-bold font-serif gold-gradient-text">0 AED</div>
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mt-1" data-i18n="stat_deposit">Deposit Options</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl sm:text-3xl font-bold font-serif gold-gradient-text">100%</div>
+                            <div class="text-xs text-gray-400 uppercase tracking-wider mt-1" data-i18n="stat_insured">Insured Vehicles</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Marquee Animated Ticker with Authentic SVG Brand Logos -->
+            <section class="py-8 bg-dark-900 border-y border-dark-800 overflow-hidden relative">
+                <div class="max-w-7xl mx-auto px-4 text-center mb-4">
+                    <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest" data-i18n="marquee_title">Prestigious Partner Brands</span>
+                </div>
+                <div class="flex overflow-hidden relative w-full">
+                    <div class="animate-marquee flex items-center gap-16 whitespace-nowrap px-8">
+                        <!-- Lamborghini -->
+                        <div onclick="filterByBrand('Lamborghini')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-gold-500" viewBox="0 0 24 24"><path d="M12 2L2 19h20L12 2zm0 4l6.5 11h-13L12 6z"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">LAMBORGHINI</span>
+                        </div>
+                        <!-- Ferrari -->
+                        <div onclick="filterByBrand('Ferrari')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-red-500" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">FERRARI</span>
+                        </div>
+                        <!-- Rolls Royce -->
+                        <div onclick="filterByBrand('Rolls Royce')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-gold-400" viewBox="0 0 24 24"><path d="M6 2h12v4H6V2zm0 6h12v14H6V8zm2 2v10h8V10H8z"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">ROLLS ROYCE</span>
+                        </div>
+                        <!-- Mercedes AMG -->
+                        <div onclick="filterByBrand('Mercedes')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-gray-200" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v10l8.66 5M12 12L3.34 17"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">MERCEDES-AMG</span>
+                        </div>
+                        <!-- Nissan -->
+                        <div onclick="filterByBrand('Nissan')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-red-600" viewBox="0 0 24 24"><path d="M4 12h16v2H4zM7 8h10v2H7zM10 4h4v2h-4z"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">NISSAN</span>
+                        </div>
+                        <!-- Ford -->
+                        <div onclick="filterByBrand('Ford')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-blue-500" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="6" fill="none" stroke="currentColor" stroke-width="2"/><text x="7" y="15" font-size="8" fill="currentColor">Ford</text></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">FORD</span>
+                        </div>
+                        <!-- Audi -->
+                        <div onclick="filterByBrand('Audi')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-gray-300" viewBox="0 0 24 24"><circle cx="6" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="14" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">AUDI</span>
+                        </div>
+                        <!-- Cadillac -->
+                        <div onclick="filterByBrand('Cadillac')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-amber-400" viewBox="0 0 24 24"><path d="M12 2l8 8-8 12-8-12z"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">CADILLAC</span>
+                        </div>
+                        <!-- Duplicate for infinite loop -->
+                        <div onclick="filterByBrand('Lamborghini')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-gold-500" viewBox="0 0 24 24"><path d="M12 2L2 19h20L12 2zm0 4l6.5 11h-13L12 6z"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">LAMBORGHINI</span>
+                        </div>
+                        <div onclick="filterByBrand('Ferrari')" class="cursor-pointer flex items-center gap-3 text-gray-300 hover:text-gold-400 transition-colors">
+                            <svg class="w-8 h-8 fill-current text-red-500" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                            <span class="font-serif font-bold text-lg tracking-wider">FERRARI</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categories Filter Tabs -->
+            <section id="categories" class="py-12 bg-dark-900 border-b border-dark-800">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="text-xs font-semibold text-gold-500 uppercase tracking-widest mb-2" data-i18n="cat_section_tag">Explore By Class</h2>
+                    <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white mb-8" data-i18n="cat_section_title">Our Exclusive Car Categories</h3>
+                    
+                    <div class="flex flex-wrap justify-center gap-3" id="category-filters">
+                        <button onclick="filterCategory('all')" class="cat-btn active px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-gold-500 text-black shadow-lg shadow-gold-500/20" data-cat="all" data-i18n="cat_all">
+                            All Vehicles
+                        </button>
+                        <button onclick="filterCategory('supercar')" class="cat-btn px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-dark-800 text-gray-300 hover:bg-dark-700 border border-dark-700" data-cat="supercar" data-i18n="cat_supercar">
+                            Supercars
+                        </button>
+                        <button onclick="filterCategory('luxury-suv')" class="cat-btn px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-dark-800 text-gray-300 hover:bg-dark-700 border border-dark-700" data-cat="luxury-suv" data-i18n="cat_suv">
+                            Luxury SUVs
+                        </button>
+                        <button onclick="filterCategory('sedan')" class="cat-btn px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-dark-800 text-gray-300 hover:bg-dark-700 border border-dark-700" data-cat="sedan" data-i18n="cat_sedan">
+                            Executive Sedans
+                        </button>
+                        <button onclick="filterCategory('sports')" class="cat-btn px-6 py-3 rounded-xl text-sm font-semibold transition-all bg-dark-800 text-gray-300 hover:bg-dark-700 border border-dark-700" data-cat="sports" data-i18n="cat_sports">
+                            Sports Cars
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fleet Showcase with Ultra-Fast Infinite Scroll -->
+            <section id="fleet" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest" data-i18n="fleet_tag">AAD Fleet Catalog (Over 30+ Models)</span>
+                        <h2 id="fleet-heading" class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1" data-i18n="fleet_title">Choose Your Dream Car</h2>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-gray-400 text-sm flex items-center gap-4">
+                        <span data-i18n="fleet_showing">Showing</span> <span id="car-count" class="text-gold-400 font-bold">12</span> <span data-i18n="fleet_of">of</span> <span id="car-total-count" class="text-white font-bold">32</span> <span data-i18n="fleet_models">models</span>
+                        <button id="reset-filter-btn" onclick="filterCategory('all')" class="hidden text-xs bg-dark-800 border border-dark-700 text-gold-400 px-3 py-1.5 rounded-lg hover:bg-dark-700" data-i18n="view_all_btn">View All</button>
+                    </div>
+                </div>
+
+                <!-- Cars Grid -->
+                <div id="fleet-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+                <!-- Fast Scroll Loading Indicator -->
+                <div id="scroll-loading" class="hidden text-center py-8">
+                    <div class="inline-flex items-center gap-3 text-gold-400 text-xs bg-dark-900 border border-dark-800 px-5 py-2.5 rounded-full shadow-lg">
+                        <i class="fa-solid fa-spinner fa-spin text-base"></i> <span data-i18n="loading_more">Loading more instantly...</span>
+                    </div>
+                </div>
+
+                <!-- No results message -->
+                <div id="no-results" class="hidden text-center py-20">
+                    <div class="w-16 h-16 bg-dark-800 rounded-full flex items-center justify-center mx-auto text-gold-500 text-2xl mb-4">
+                        <i class="fa-solid fa-car-side"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2" data-i18n="no_results_title">No matching vehicles found</h3>
+                    <p class="text-gray-400 text-sm" data-i18n="no_results_desc">Try searching for a different model or resetting your filter category.</p>
+                    <button onclick="filterCategory('all')" class="mt-6 gold-btn text-black font-semibold px-6 py-2.5 rounded-xl text-sm" data-i18n="view_all_btn">View All Cars</button>
+                </div>
+            </section>
+
+            <!-- Why AAD Rental Cars -->
+            <section id="why-us" class="py-20 bg-dark-900 border-t border-dark-800">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-16">
+                        <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest" data-i18n="why_tag">The AAD Advantage</span>
+                        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-2" data-i18n="why_title">Why Rent With AAD Rental Cars?</h2>
+                        <p class="text-gray-400 text-sm sm:text-base mt-4" data-i18n="why_desc">We redefine luxury car rental with unmatched customer care, pristine vehicles, and transparent pricing.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-dark-800/60 p-8 rounded-2xl border border-dark-700/80 hover:border-gold-500/40 transition-all">
+                            <div class="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-2xl mb-6">
+                                <i class="fa-solid fa-truck-fast"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3 font-serif" data-i18n="why_1_title">Free Delivery & Pickup</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed" data-i18n="why_1_desc">We deliver your chosen luxury car directly to your hotel, residence, or airport terminal on time, absolutely free of charge.</p>
+                        </div>
+                        <div class="bg-dark-800/60 p-8 rounded-2xl border border-dark-700/80 hover:border-gold-500/40 transition-all">
+                            <div class="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-2xl mb-6">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3 font-serif" data-i18n="why_2_title">Comprehensive Insurance</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed" data-i18n="why_2_desc">Drive with absolute peace of mind. All our supercars and luxury fleets come with comprehensive insurance coverage.</p>
+                        </div>
+                        <div class="bg-dark-800/60 p-8 rounded-2xl border border-dark-700/80 hover:border-gold-500/40 transition-all">
+                            <div class="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-2xl mb-6">
+                                <i class="fa-solid fa-headset"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3 font-serif" data-i18n="why_3_title">24/7 VIP Concierge</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed" data-i18n="why_3_desc">Our dedicated support team is available around the clock via phone and WhatsApp to assist you with any request.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section id="testimonials" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest" data-i18n="reviews_tag">Client Reviews</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-2" data-i18n="reviews_title">What Our VIP Clients Say</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-dark-900 p-8 rounded-2xl border border-dark-800 relative">
+                        <div class="text-gold-500 mb-4 flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-6" data-i18n="rev_1">"Renting the Lamborghini Huracan EVO from AAD Rental Cars was seamless! The car was delivered sparkling clean to my hotel in pristine condition. Highly recommended!"</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 font-bold flex items-center justify-center">AK</div>
+                            <div>
+                                <div class="text-sm font-bold text-white">Alexander K.</div>
+                                <div class="text-xs text-gray-500" data-i18n="rev_1_loc">Verified Client from London</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark-900 p-8 rounded-2xl border border-dark-800 relative">
+                        <div class="text-gold-500 mb-4 flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-6" data-i18n="rev_2">"AAD's WhatsApp booking is instant and very professional. Got the Rolls Royce Cullinan for a family event and everything was handled with absolute VIP perfection."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 font-bold flex items-center justify-center">MS</div>
+                            <div>
+                                <div class="text-sm font-bold text-white">Mohammed S.</div>
+                                <div class="text-xs text-gray-500" data-i18n="rev_2_loc">Verified Client from Dubai</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark-900 p-8 rounded-2xl border border-dark-800 relative">
+                        <div class="text-gold-500 mb-4 flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-6" data-i18n="rev_3">"Best exotic car rental agency by far. Transparent prices, no hidden fees, and wonderful customer support. Will always rent from AAD!"</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 font-bold flex items-center justify-center">JD</div>
+                            <div>
+                                <div class="text-sm font-bold text-white">Jessica D.</div>
+                                <div class="text-xs text-gray-500" data-i18n="rev_3_loc">Verified Client from Paris</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact / Booking Inquiry Section -->
+            <section id="contact" class="py-20 bg-dark-900 border-t border-dark-800">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest" data-i18n="contact_tag">Get In Touch</span>
+                        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-2 mb-6" data-i18n="contact_title">Ready To Drive Your Dream Car?</h2>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-8" data-i18n="contact_desc">
+                            Contact our VIP concierge team instantly via WhatsApp or fill out the inquiry form. We respond within minutes to secure your booking.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-dark-800 border border-dark-700 flex items-center justify-center text-gold-400 text-xl">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-400 uppercase tracking-wider" data-i18n="contact_phone_lbl">Call / WhatsApp</div>
+                                    <div class="text-base font-bold text-white">+971 52 392 2504</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-dark-800 border border-dark-700 flex items-center justify-center text-gold-400 text-xl">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-400 uppercase tracking-wider" data-i18n="contact_email_lbl">Email Us</div>
+                                    <div class="text-base font-bold text-white">vip@aadrentalcars.ae</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-dark-800 border border-dark-700 flex items-center justify-center text-gold-400 text-xl">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-400 uppercase tracking-wider" data-i18n="contact_loc_lbl">Showroom Location</div>
+                                    <div class="text-base font-bold text-white">Sheikh Zayed Road, Dubai, UAE</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inquiry Form -->
+                    <div class="bg-dark-800 p-8 rounded-3xl border border-dark-700 shadow-2xl">
+                        <h3 class="text-2xl font-serif font-bold text-white mb-6" data-i18n="form_title">Quick Reservation Inquiry</h3>
+                        <form id="inquiry-form" onsubmit="handleInquiry(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1" data-i18n="form_name">Full Name</label>
+                                <input type="text" id="inquiry-name" required placeholder="John Doe" class="w-full bg-dark-900 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1" data-i18n="form_phone">Phone / WhatsApp</label>
+                                    <input type="text" id="inquiry-phone" required placeholder="+971 50 ..." class="w-full bg-dark-900 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1" data-i18n="form_car">Select Car</label>
+                                    <select id="inquiry-car" class="w-full bg-dark-900 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                                        <!-- Populated via JS -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1" data-i18n="form_msg">Message / Dates</label>
+                                <textarea id="inquiry-msg" rows="3" placeholder="Rental dates, delivery location..." class="w-full bg-dark-900 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full gold-btn text-black font-bold uppercase tracking-wider py-3.5 rounded-xl text-sm shadow-lg" data-i18n="form_submit">
+                                Send Inquiry Now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer with Relocated Admin Access Button -->
+            <footer class="bg-dark-950 border-t border-dark-800 py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-500 to-amber-700 flex items-center justify-center text-black font-extrabold text-lg font-serif">
+                            AAD
+                        </div>
+                        <span class="font-serif text-lg font-bold tracking-wider text-white">AAD <span class="text-gold-500 font-sans font-light text-xs tracking-widest block uppercase">Rental Cars Dubai</span></span>
+                    </div>
+                    <div class="text-xs text-gray-500 text-center md:text-left">
+                        &copy; 2026 AAD Rental Cars LLC. All rights reserved. Sheikh Zayed Road, Dubai, UAE.
+                    </div>
+                    <!-- Relocated Admin Button at Footer -->
+                    <div>
+                        <button onclick="openAdminLoginModal()" class="text-xs text-gray-400 hover:text-gold-400 transition-colors flex items-center gap-1.5 bg-dark-900 px-4 py-2.5 rounded-xl border border-dark-800">
+                            <i class="fa-solid fa-lock text-gold-500"></i> <span data-i18n="admin_footer_btn">Admin Panel Portal</span>
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- BRAND / COMPANY DETAIL VIEW -->
+        <div id="view-brand" class="page-view hidden pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <button onclick="showSection('home')" class="mb-8 inline-flex items-center gap-2 text-xs font-semibold bg-dark-800 text-gold-400 border border-dark-700 px-4 py-2 rounded-xl hover:bg-dark-700 transition-all">
+                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_home">Back to Home</span>
+            </button>
+            <div id="brand-header-box" class="bg-dark-900 p-8 sm:p-12 rounded-3xl border border-dark-800 mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <span id="brand-tag" class="text-xs font-semibold text-gold-500 uppercase tracking-widest">Official Showroom Collection</span>
+                    <h1 id="brand-title" class="text-3xl sm:text-5xl font-serif font-bold text-white mt-2">Brand Name</h1>
+                    <p id="brand-desc" class="text-gray-400 text-sm mt-3 max-w-xl">Explore our handpicked fleet of vehicles from this world-renowned manufacturer available in Dubai.</p>
+                </div>
+                <div class="w-20 h-20 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-4xl">
+                    <i id="brand-icon" class="fa-solid fa-car"></i>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-serif font-bold text-white mb-6" data-i18n="available_models">Available Models</h2>
+            <div id="brand-fleet-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+
+        <!-- ADMIN PANEL VIEW -->
+        <div id="view-admin" class="page-view hidden pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-dark-900 p-6 sm:p-8 rounded-3xl border border-gold-500/30 mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-semibold text-gold-500 uppercase tracking-widest">Owner Portal</span>
+                    <h1 class="text-2xl sm:text-3xl font-serif font-bold text-white mt-1">AAD Fleet Admin Panel</h1>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-1">Add new cars, upload PC images, edit prices, or delete vehicles instantly.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button onclick="openAddCarModal()" class="gold-btn text-black font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-plus text-sm"></i> Add New Car
+                    </button>
+                    <button onclick="showSection('home')" class="bg-dark-800 text-gray-300 border border-dark-700 px-4 py-2.5 rounded-xl text-xs font-semibold hover:text-white">
+                        <i class="fa-solid fa-globe mr-1"></i> View Website
+                    </button>
+                    <button onclick="logoutAdmin()" class="bg-red-600/20 text-red-400 border border-red-500/30 px-4 py-2.5 rounded-xl text-xs font-semibold hover:bg-red-600 hover:text-white">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-dark-900 rounded-3xl border border-dark-800 overflow-hidden shadow-2xl">
+                <div class="p-6 border-b border-dark-800 flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-white font-serif">Fleet Management Table</h2>
+                    <span class="text-xs text-gray-400">Total Cars: <span id="admin-total-cars" class="text-gold-400 font-bold">32</span></span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-dark-800/80 text-gray-400 text-xs uppercase tracking-wider border-b border-dark-700">
+                                <th class="p-4">Car Preview</th>
+                                <th class="p-4">Model Name</th>
+                                <th class="p-4">Brand / Category</th>
+                                <th class="p-4">Price (AED/Day)</th>
+                                <th class="p-4">HP</th>
+                                <th class="p-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-dark-800 text-sm text-gray-300">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-dark-900 border border-gold-500/40 rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+            <button onclick="closeAdminLoginModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center mx-auto text-gold-400 text-xl mb-3">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold text-white">Admin Authentication</h3>
+                <p class="text-xs text-gray-400 mt-1">Enter password to access owner dashboard</p>
+            </div>
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Password</label>
+                    <input type="password" id="admin-pass-input" required placeholder="Enter password..." class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <button type="submit" class="w-full gold-btn text-black font-bold uppercase tracking-wider py-3 rounded-xl text-sm shadow-lg">
+                    Login to Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Car Modal (Admin) -->
+    <div id="add-car-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-dark-900 border border-dark-700 rounded-3xl p-8 max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeAddCarModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="text-xl font-serif font-bold text-white mb-4">Add New Luxury Car</h3>
+            <form id="add-car-form" onsubmit="saveNewCar(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Car Name</label>
+                    <input type="text" id="add-car-name" required placeholder="e.g. Nissan Patrol Nismo" class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Brand</label>
+                        <select id="add-car-brand" class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                            <option value="Lamborghini">Lamborghini</option>
+                            <option value="Ferrari">Ferrari</option>
+                            <option value="Rolls Royce">Rolls Royce</option>
+                            <option value="Mercedes">Mercedes</option>
+                            <option value="Nissan">Nissan</option>
+                            <option value="Ford">Ford</option>
+                            <option value="Audi">Audi</option>
+                            <option value="Cadillac">Cadillac</option>
+                            <option value="Porsche">Porsche</option>
+                            <option value="Bentley">Bentley</option>
+                            <option value="Range Rover">Range Rover</option>
+                        </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Message / Dates</label>
-                        <textarea id="inquiry-msg" rows="3" placeholder="Rental dates, delivery location..." class="w-full bg-dark-900 border border-dark-600 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500"></textarea>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Category</label>
+                        <select id="add-car-cat" class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                            <option value="supercar">Supercar</option>
+                            <option value="luxury-suv">Luxury SUV</option>
+                            <option value="sedan">Executive Sedan</option>
+                            <option value="sports">Sports Car</option>
+                        </select>
                     </div>
-                    <button type="submit" class="w-full gold-btn text-black font-bold uppercase tracking-wider py-3.5 rounded-xl text-sm shadow-lg">
-                        Send Inquiry Now
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-black border-t border-dark-800 py-12 px-4 sm:px-6 lg:px-8 text-gray-400 text-sm">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-            <div class="space-y-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-500 to-amber-700 flex items-center justify-center text-black font-extrabold text-lg font-serif">
-                        AAD
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Price (AED / Day)</label>
+                        <input type="number" id="add-car-price" required placeholder="1800" class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
                     </div>
-                    <span class="font-serif text-lg font-bold tracking-wider text-white">AAD <span class="text-gold-500 font-sans font-light text-xs tracking-widest block uppercase">Rental Cars</span></span>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Horsepower (HP)</label>
+                        <input type="number" id="add-car-hp" required placeholder="428" class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                    </div>
                 </div>
-                <p class="text-xs text-gray-400">
-                    Your premier destination for luxury and exotic car rentals in Dubai and across the UAE. Drive the extraordinary.
-                </p>
-                <div class="flex gap-3 text-gold-400 text-lg">
-                    <a href="#" class="hover:text-white"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="hover:text-white"><i class="fa-brands fa-whatsapp"></i></a>
-                    <a href="#" class="hover:text-white"><i class="fa-brands fa-youtube"></i></a>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Upload Car Image from PC</label>
+                    <input type="file" id="add-car-file" accept="image/*" required class="w-full bg-dark-800 border border-dark-700 text-gray-300 rounded-xl px-4 py-2.5 text-xs focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gold-500 file:text-black hover:file:bg-gold-400 cursor-pointer">
                 </div>
-            </div>
-
-            <div>
-                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-widest">Quick Links</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><a href="#fleet" class="hover:text-gold-400">Our Fleet</a></li>
-                    <li><a href="#categories" class="hover:text-gold-400">Categories</a></li>
-                    <li><a href="#why-us" class="hover:text-gold-400">Why Choose Us</a></li>
-                    <li><a href="#testimonials" class="hover:text-gold-400">Client Reviews</a></li>
-                    <li><a href="#contact" class="hover:text-gold-400">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-widest">Fleet Categories</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><a href="#fleet" onclick="filterCategory('supercar')" class="hover:text-gold-400">Supercars</a></li>
-                    <li><a href="#fleet" onclick="filterCategory('luxury-suv')" class="hover:text-gold-400">Luxury SUVs</a></li>
-                    <li><a href="#fleet" onclick="filterCategory('sedan')" class="hover:text-gold-400">Executive Sedans</a></li>
-                    <li><a href="#fleet" onclick="filterCategory('sports')" class="hover:text-gold-400">Sports Cars</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-widest">Newsletter</h4>
-                <p class="text-xs text-gray-400 mb-3">Subscribe for exclusive VIP fleet updates and seasonal offers.</p>
-                <div class="flex gap-2">
-                    <input type="email" placeholder="Your email" class="bg-dark-900 border border-dark-700 rounded-lg px-3 py-2 text-xs text-white w-full focus:outline-none focus:border-gold-500">
-                    <button onclick="subscribeNewsletter()" class="gold-btn text-black font-bold px-4 py-2 rounded-lg text-xs uppercase">Join</button>
+                <div class="pt-4 flex gap-3">
+                    <button type="button" onclick="closeAddCarModal()" class="flex-1 bg-dark-800 border border-dark-700 text-gray-300 py-3 rounded-xl text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="flex-1 gold-btn text-black font-bold py-3 rounded-xl text-xs uppercase tracking-wider">Add Car</button>
                 </div>
-            </div>
+            </form>
         </div>
+    </div>
 
-        <div class="max-w-7xl mx-auto pt-8 border-t border-dark-900 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500">
-            <div>&copy; 2026 AAD Rental Cars. All rights reserved.</div>
-            <div class="flex gap-6 mt-4 sm:mt-0">
-                <a href="#" class="hover:text-gray-400">Privacy Policy</a>
-                <a href="#" class="hover:text-gray-400">Terms of Service</a>
-                <a href="#" class="hover:text-gray-400">Rental Agreement</a>
-            </div>
+    <!-- Edit Car Modal (Admin) -->
+    <div id="edit-car-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-dark-900 border border-dark-700 rounded-3xl p-8 max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeEditModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="text-xl font-serif font-bold text-white mb-4">Edit Vehicle Details</h3>
+            <form id="edit-car-form" onsubmit="saveCarEdit(event)" class="space-y-4">
+                <input type="hidden" id="edit-car-id">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Car Name</label>
+                    <input type="text" id="edit-car-name" required class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Brand</label>
+                        <select id="edit-car-brand" class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                            <option value="Lamborghini">Lamborghini</option>
+                            <option value="Ferrari">Ferrari</option>
+                            <option value="Rolls Royce">Rolls Royce</option>
+                            <option value="Mercedes">Mercedes</option>
+                            <option value="Nissan">Nissan</option>
+                            <option value="Ford">Ford</option>
+                            <option value="Audi">Audi</option>
+                            <option value="Cadillac">Cadillac</option>
+                            <option value="Porsche">Porsche</option>
+                            <option value="Bentley">Bentley</option>
+                            <option value="Range Rover">Range Rover</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Category</label>
+                        <select id="edit-car-cat" class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                            <option value="supercar">Supercar</option>
+                            <option value="luxury-suv">Luxury SUV</option>
+                            <option value="sedan">Executive Sedan</option>
+                            <option value="sports">Sports Car</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Price (AED / Day)</label>
+                        <input type="number" id="edit-car-price" required class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Horsepower (HP)</label>
+                        <input type="number" id="edit-car-hp" required class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-gold-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Upload New Image from PC (Optional)</label>
+                    <input type="file" id="edit-car-file" accept="image/*" class="w-full bg-dark-800 border border-dark-700 text-gray-300 rounded-xl px-4 py-2.5 text-xs focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gold-500 file:text-black hover:file:bg-gold-400 cursor-pointer">
+                </div>
+                <div class="pt-4 flex gap-3">
+                    <button type="button" onclick="closeEditModal()" class="flex-1 bg-dark-800 border border-dark-700 text-gray-300 py-3 rounded-xl text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="flex-1 gold-btn text-black font-bold py-3 rounded-xl text-xs uppercase tracking-wider">Save Changes</button>
+                </div>
+            </form>
         </div>
-    </footer>
+    </div>
 
-    <!-- Notification Toast / Modal Box -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-dark-800 border border-gold-500/50 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-24 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-dark-800 border border-gold-500/50 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
         <div class="w-8 h-8 rounded-full bg-gold-500 text-black flex items-center justify-center font-bold text-sm">
             <i class="fa-solid fa-check"></i>
         </div>
@@ -485,263 +780,744 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Fleet Data Array for AAD Rental Cars
-        const fleetData = [
-            {
-                id: 1,
-                name: "Lamborghini Huracan EVO",
-                category: "supercar",
-                categoryName: "Supercar",
-                price: 2500,
-                image: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&q=80",
-                hp: "630 HP",
-                speed: "325 km/h",
-                acceleration: "2.9s (0-100)"
+        // Dictionary Translations for English, Arabic, and Russian
+        const translations = {
+            en: {
+                brand_subtitle: "Rental Cars",
+                nav_home: "Home",
+                nav_fleet: "Our Fleet",
+                nav_brands: "Brands",
+                nav_why: "Why AAD",
+                nav_reviews: "Reviews",
+                nav_contact: "Contact",
+                hero_badge: "Dubai's Premier Luxury & Exotic Car Rental",
+                hero_title_1: "Experience Ultimate Luxury With",
+                hero_desc: "Drive the world's most prestigious supercars, SUVs, and luxury sedans. Free delivery & pickup, 24/7 VIP concierge service.",
+                search_cat_label: "Select Category",
+                search_model_label: "Search Model",
+                search_btn: "Find Your Ride",
+                cat_all: "All Vehicles",
+                cat_supercar: "Supercars",
+                cat_suv: "Luxury SUVs",
+                cat_sedan: "Executive Sedans",
+                cat_sports: "Sports Cars",
+                stat_fleet: "Exotic Fleet",
+                stat_support: "VIP Support",
+                stat_deposit: "Deposit Options",
+                stat_insured: "Insured Vehicles",
+                marquee_title: "Prestigious Partner Brands",
+                cat_section_tag: "Explore By Class",
+                cat_section_title: "Our Exclusive Car Categories",
+                fleet_tag: "AAD Fleet Catalog (Over 30+ Models)",
+                fleet_title: "Choose Your Dream Car",
+                fleet_showing: "Showing",
+                fleet_of: "of",
+                fleet_models: "models",
+                view_all_btn: "View All",
+                loading_more: "Loading more instantly...",
+                no_results_title: "No matching vehicles found",
+                no_results_desc: "Try searching for a different model or resetting your filter category.",
+                why_tag: "The AAD Advantage",
+                why_title: "Why Rent With AAD Rental Cars?",
+                why_desc: "We redefine luxury car rental with unmatched customer care, pristine vehicles, and transparent pricing.",
+                why_1_title: "Free Delivery & Pickup",
+                why_1_desc: "We deliver your chosen luxury car directly to your hotel, residence, or airport terminal on time, absolutely free of charge.",
+                why_2_title: "Comprehensive Insurance",
+                why_2_desc: "Drive with absolute peace of mind. All our supercars and luxury fleets come with comprehensive insurance coverage.",
+                why_3_title: "24/7 VIP Concierge",
+                why_3_desc: "Our dedicated support team is available around the clock via phone and WhatsApp to assist you with any request.",
+                reviews_tag: "Client Reviews",
+                reviews_title: "What Our VIP Clients Say",
+                rev_1: "\"Renting the Lamborghini Huracan EVO from AAD Rental Cars was seamless! The car was delivered sparkling clean to my hotel in pristine condition. Highly recommended!\"",
+                rev_1_loc: "Verified Client from London",
+                rev_2: "\"AAD's WhatsApp booking is instant and very professional. Got the Rolls Royce Cullinan for a family event and everything was handled with absolute VIP perfection.\"",
+                rev_2_loc: "Verified Client from Dubai",
+                rev_3: "\"Best exotic car rental agency by far. Transparent prices, no hidden fees, and wonderful customer support. Will always rent from AAD!\"",
+                rev_3_loc: "Verified Client from Paris",
+                contact_tag: "Get In Touch",
+                contact_title: "Ready To Drive Your Dream Car?",
+                contact_desc: "Contact our VIP concierge team instantly via WhatsApp or fill out the inquiry form. We respond within minutes to secure your booking.",
+                contact_phone_lbl: "Call / WhatsApp",
+                contact_email_lbl: "Email Us",
+                contact_loc_lbl: "Showroom Location",
+                form_title: "Quick Reservation Inquiry",
+                form_name: "Full Name",
+                form_phone: "Phone / WhatsApp",
+                form_car: "Select Car",
+                form_msg: "Message / Dates",
+                form_submit: "Send Inquiry Now",
+                admin_footer_btn: "Admin Panel Portal",
+                back_home: "Back to Home",
+                available_models: "Available Models",
+                book_now: "Book Now",
+                whatsapp: "WhatsApp",
+                starting_from: "Starting from",
+                day: "day"
             },
-            {
-                id: 2,
-                name: "Rolls Royce Cullinan",
-                category: "luxury-suv",
-                categoryName: "Luxury SUV",
-                price: 3500,
-                image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
-                hp: "563 HP",
-                speed: "250 km/h",
-                acceleration: "5.2s (0-100)"
+            ar: {
+                brand_subtitle: "لتأجير السيارات",
+                nav_home: "الرئيسية",
+                nav_fleet: "أسطولنا",
+                nav_brands: "الماركات",
+                nav_why: "لماذا AAD",
+                nav_reviews: "الآراء",
+                nav_contact: "اتصل بنا",
+                hero_badge: "الرائدة في تأجير السيارات الفاخرة والرياضية في دبي",
+                hero_title_1: "استمتع بأقصى درجات الفخامة مع",
+                hero_desc: "قم بقيادة أروع السيارات الخارقة، والدفع الرباعي الفاخرة، والسيدان الراقية. توصيل واستلام مجاني، خدمة عملاء على مدار الساعة.",
+                search_cat_label: "اختر الفئة",
+                search_model_label: "ابحث عن موديل",
+                search_btn: "اعثر على سيارتك",
+                cat_all: "جميع السيارات",
+                cat_supercar: "السيارات الخارقة",
+                cat_suv: "دفع رباعي فاخرة",
+                cat_sedan: "سيدان تنفيذية",
+                cat_sports: "سيارات رياضية",
+                stat_fleet: "سيارة فاخرة",
+                stat_support: "دعم VIP مباشر",
+                stat_deposit: "خيارات بدون تأمين",
+                stat_insured: "سيارات مؤمنة بالكامل",
+                marquee_title: "أبرز العلامات التجارية العالمية",
+                cat_section_tag: "استكشف حسب الفئة",
+                cat_section_title: "فئات سياراتنا الحصرية",
+                fleet_tag: "كتالوج أأسطول AAD (أكثر من 30+ موديل)",
+                fleet_title: "اختر سيارة أحلامك",
+                fleet_showing: "عرض",
+                fleet_of: "من أصل",
+                fleet_models: "سيارة",
+                view_all_btn: "عرض الكل",
+                loading_more: "جارٍ التحميل فوراً...",
+                no_results_title: "لم يتم العثور على سيارات مطابقة",
+                no_results_desc: "جرب البحث عن طراز مختلف أو إعادة ضبط تصنيف الفئة.",
+                why_tag: "مزايا AAD",
+                why_title: "لماذا تستأجر من AAD لتأجير السيارات؟",
+                why_desc: "نحن نعيد تعريف تأجير السيارات الفاخرة بعناية لا مثيل لها بالعملاء وأسعار شفافة.",
+                why_1_title: "توصيل واستلام مجاني",
+                why_1_desc: "نقوم بتوصيل سيارتك الفاخرة المختارة مباشرة إلى فندقك أو مكان إقامتك في الوقت المحدد وبدون رسوم إضافية.",
+                why_2_title: "تأمين شامل",
+                why_2_desc: "قم القيادة براحة بال تامة. جميع السيارات الخارقة والفاخرة لدينا تأتي مع تغطية تأمينية شاملة.",
+                why_3_title: "خدمة كبار الشخصيات 24/7",
+                why_3_desc: "فريق الدعم المخصص لدينا متاح على مدار الساعة عبر الهاتف واتساب لمساعدتك في أي طلب.",
+                reviews_tag: "آراء العملاء",
+                reviews_title: "ماذا يقول عملاؤنا المميزون",
+                rev_1: "\"كان استئجار لامبورغيني هوراكان EVO من AAD تجربة سلسة للغاية! تم توصيل السيارة نظيفة وبحالة مثالية إلى الفندق. أنصح بها بشدة!\"",
+                rev_1_loc: "عميل معتمد من لندن",
+                rev_2: "\"الحجز عبر واتساب مع AAD فوري واحترافي للغاية. حصلت على رولز رويس كولينان لمناسبة عائلية وتم التعامل بكل مثالية VIP.\"",
+                rev_2_loc: "عميل معتمد من دبي",
+                rev_3: "\"أفضل وكالة تأجير سيارات رياضية بلا منازع. أسعار شفافة بدون رسوم خفية ودعم رائع. سأستأجر دائماً من AAD!\"",
+                rev_3_loc: "عميل معتمد من باريس",
+                contact_tag: "تواصل معنا",
+                contact_title: "هل أنت مستعد لقيادة سيارة أحلامك؟",
+                contact_desc: "تواصل مع فريق كبار الشخصيات فوراً عبر واتساب أو املأ نموذج الاستفسار وسنرد عليك خلال دقائق.",
+                contact_phone_lbl: "اتصال / واتساب",
+                contact_email_lbl: "راسلنا عبر البريد",
+                contact_loc_lbl: "موقع صالة العرض",
+                form_title: "استفسار حجز سريع",
+                form_name: "الاسم الكامل",
+                form_phone: "رقم الهاتف / واتساب",
+                form_car: "اختر السيارة",
+                form_msg: "الرسالة / التواريخ",
+                form_submit: "إرسال الاستفسار الآن",
+                admin_footer_btn: "بوابة لوحة تحكم الإدارة",
+                back_home: "العودة للرئيسية",
+                available_models: "الموديلات المتوفرة",
+                book_now: "احجز الآن",
+                whatsapp: "واتساب",
+                starting_from: "تبدأ من",
+                day: "اليوم"
             },
-            {
-                id: 3,
-                name: "Ferrari F8 Spider",
-                category: "supercar",
-                categoryName: "Supercar",
-                price: 3200,
-                image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
-                hp: "710 HP",
-                speed: "340 km/h",
-                acceleration: "2.9s (0-100)"
-            },
-            {
-                id: 4,
-                name: "Mercedes G63 AMG",
-                category: "luxury-suv",
-                categoryName: "Luxury SUV",
-                price: 2200,
-                image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=800&q=80",
-                hp: "577 HP",
-                speed: "220 km/h",
-                acceleration: "4.5s (0-100)"
-            },
-            {
-                id: 5,
-                name: "Porsche 911 Turbo S",
-                category: "sports",
-                categoryName: "Sports Car",
-                price: 2400,
-                image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80",
-                hp: "640 HP",
-                speed: "330 km/h",
-                acceleration: "2.7s (0-100)"
-            },
-            {
-                id: 6,
-                name: "Bentley Continental GT",
-                category: "sedan",
-                categoryName: "Executive Sedan",
-                price: 2800,
-                image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80",
-                hp: "650 HP",
-                speed: "335 km/h",
-                acceleration: "3.6s (0-100)"
-            },
-            {
-                id: 7,
-                name: "Range Rover Sport HSE",
-                category: "luxury-suv",
-                categoryName: "Luxury SUV",
-                price: 1500,
-                image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=800&q=80",
-                hp: "395 HP",
-                speed: "225 km/h",
-                acceleration: "6.0s (0-100)"
-            },
-            {
-                id: 8,
-                name: "BMW M8 Competition",
-                category: "sports",
-                categoryName: "Sports Car",
-                price: 1900,
-                image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80",
-                hp: "617 HP",
-                speed: "305 km/h",
-                acceleration: "3.2s (0-100)"
+            ru: {
+                brand_subtitle: "Аренда Авто",
+                nav_home: "Главная",
+                nav_fleet: "Автопарк",
+                nav_brands: "Бренды",
+                nav_why: "Почему AAD",
+                nav_reviews: "Отзывы",
+                nav_contact: "Контакты",
+                hero_badge: "Ведущий прокат элитных и спортивных авто в Дубае",
+                hero_title_1: "Испытайте Абсолютную Роскошь с",
+                hero_desc: "Управляйте самыми престижными суперкарами, внедорожниками и седанами. Бесплатная доставка и круглосуточная VIP-поддержка.",
+                search_cat_label: "Выберите категорию",
+                search_model_label: "Поиск модели",
+                search_btn: "Найти авто",
+                cat_all: "Все автомобили",
+                cat_supercar: "Суперкары",
+                cat_suv: "Элитные внедорожники",
+                cat_sedan: "Премиум седаны",
+                cat_sports: "Спорткары",
+                stat_fleet: "Элитных авто",
+                stat_support: "VIP Поддержка",
+                stat_deposit: "Без депозита",
+                stat_insured: "Застраховано",
+                marquee_title: "Престижные бренды партнеров",
+                cat_section_tag: "Исследовать по классу",
+                cat_section_title: "Наши эксклюзивные категории",
+                fleet_tag: "Каталог автопарка AAD (более 30+ моделей)",
+                fleet_title: "Выберите автомобиль своей мечты",
+                fleet_showing: "Показано",
+                fleet_of: "из",
+                fleet_models: "моделей",
+                view_all_btn: "Все авто",
+                loading_more: "Мгновенная загрузка...",
+                no_results_title: "Автомобили не найдены",
+                no_results_desc: "Попробуйте изменить параметры поиска или категорию.",
+                why_tag: "Преимущества AAD",
+                why_title: "Почему выбирают AAD Rental Cars?",
+                why_desc: "Мы переосмысливаем аренду элитных авто благодаря безупречному сервису и прозрачным ценам.",
+                why_1_title: "Бесплатная доставка",
+                why_1_desc: "Мы доставим выбранный автомобиль прямо к вашему отелю, резиденции или в аэропорт вовремя и абсолютно бесплатно.",
+                why_2_title: "Полная страховка",
+                why_2_desc: "Управляйте с абсолютным спокойствием. Все наши суперкары и элитный автопарк полностью застрахованы.",
+                why_3_title: "VIP Консьерж 24/7",
+                why_3_desc: "Наша служба поддержки доступна круглосуточно по телефону и WhatsApp для решения любых вопросов.",
+                reviews_tag: "Отзывы клиентов",
+                reviews_title: "Что говорят наши VIP клиенты",
+                rev_1: "\"Аренда Lamborghini Huracan EVO в AAD прошла безупречно! Машину доставили в идеальном состоянии прямо к отелю. Рекомендую!\"",
+                rev_1_loc: "Проверенный клиент из Лондона",
+                rev_2: "\"Бронирование через WhatsApp в AAD мгновенное и профессиональное. Взял Rolls Royce Cullinan для семейного события, все супер!\"",
+                rev_2_loc: "Проверенный клиент из Дубая",
+                rev_3: "\"Лучшее агентство по прокату элитных авто. Прозрачные цены, без скрытых платежей. Буду арендовать только в AAD!\"",
+                rev_3_loc: "Проверенный клиент из Парижа",
+                contact_tag: "Связаться с нами",
+                contact_title: "Готовы сесть за руль автомобиля мечты?",
+                contact_desc: "Свяжитесь с нашей командой VIP-консьержей через WhatsApp или заполните форму заявки.",
+                contact_phone_lbl: "Телефон / WhatsApp",
+                contact_email_lbl: "Наш Email",
+                contact_loc_lbl: "Адрес шоурума",
+                form_title: "Быстрый запрос бронирования",
+                form_name: "Ваше имя",
+                form_phone: "Телефон / WhatsApp",
+                form_car: "Выберите авто",
+                form_msg: "Сообщение / Даты",
+                form_submit: "Отправить запрос",
+                admin_footer_btn: "Панель администратора",
+                back_home: "На главную",
+                available_models: "Доступные модели",
+                book_now: "Забронировать",
+                whatsapp: "WhatsApp",
+                starting_from: "От",
+                day: "день"
             }
+        };
+
+        let currentLang = 'en';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const htmlRoot = document.getElementById('html-root');
+            if (lang === 'ar') {
+                htmlRoot.setAttribute('dir', 'rtl');
+                htmlRoot.setAttribute('lang', 'ar');
+            } else {
+                htmlRoot.setAttribute('dir', 'ltr');
+                htmlRoot.setAttribute('lang', lang);
+            }
+
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Re-render fleet to update dynamic cards labels
+            renderFleet(currentActiveList, false);
+        }
+
+        // Expanded Fleet Data (32+ Luxury & Popular UAE Cars)
+        let fleetData = [
+            { id: 1, name: "Lamborghini Huracan EVO", brand: "Lamborghini", category: "supercar", categoryName: "Supercar", price: 2500, image: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&q=80", hp: 640, seats: 2 },
+            { id: 2, name: "Ferrari F8 Spider", brand: "Ferrari", category: "supercar", categoryName: "Supercar", price: 3200, image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80", hp: 710, seats: 2 },
+            { id: 3, name: "Rolls Royce Cullinan", brand: "Rolls Royce", category: "luxury-suv", categoryName: "Luxury SUV", price: 4000, image: "https://images.unsplash.com/photo-1631295868223-632ab5b25d80?auto=format&fit=crop&w=800&q=80", hp: 563, seats: 5 },
+            { id: 4, name: "Mercedes G63 AMG", brand: "Mercedes", category: "luxury-suv", categoryName: "Luxury SUV", price: 2200, image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=800&q=80", hp: 577, seats: 5 },
+            { id: 5, name: "Nissan Patrol Nismo", brand: "Nissan", category: "luxury-suv", categoryName: "Luxury SUV", price: 1500, image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80", hp: 428, seats: 8 },
+            { id: 6, name: "Ford Mustang Shelby GT500", brand: "Ford", category: "sports", categoryName: "Sports Car", price: 1600, image: "https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?auto=format&fit=crop&w=800&q=80", hp: 760, seats: 4 },
+            { id: 7, name: "Audi RSQ8", brand: "Audi", category: "luxury-suv", categoryName: "Luxury SUV", price: 2100, image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=800&q=80", hp: 591, seats: 5 },
+            { id: 8, name: "Cadillac Escalade ESV", brand: "Cadillac", category: "luxury-suv", categoryName: "Luxury SUV", price: 2300, image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80", hp: 420, seats: 7 },
+            { id: 9, name: "Nissan GT-R Nismo", brand: "Nissan", category: "supercar", categoryName: "Supercar", price: 2800, image: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80", hp: 600, seats: 4 },
+            { id: 10, name: "Porsche 911 Turbo S", brand: "Porsche", category: "sports", categoryName: "Sports Car", price: 2000, image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80", hp: 640, seats: 4 },
+            { id: 11, name: "Bentley Continental GT", brand: "Bentley", category: "sedan", categoryName: "Executive Sedan", price: 2600, image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80", hp: 650, seats: 4 },
+            { id: 12, name: "Range Rover Sport SVR", brand: "Range Rover", category: "luxury-suv", categoryName: "Luxury SUV", price: 1500, image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80", hp: 575, seats: 5 },
+            { id: 13, name: "Audi R8 V10 Performance", brand: "Audi", category: "supercar", categoryName: "Supercar", price: 2700, image: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80", hp: 602, seats: 2 },
+            { id: 14, name: "Cadillac CT5-V Blackwing", brand: "Cadillac", category: "sedan", categoryName: "Executive Sedan", price: 1800, image: "https://images.unsplash.com/photo-1618843479619-f3e1d6c8b0fa?auto=format&fit=crop&w=800&q=80", hp: 668, seats: 4 },
+            { id: 15, name: "Ford Explorer ST", brand: "Ford", category: "luxury-suv", categoryName: "Luxury SUV", price: 900, image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80", hp: 400, seats: 7 },
+            { id: 16, name: "Lamborghini Urus Performante", brand: "Lamborghini", category: "luxury-suv", categoryName: "Luxury SUV", price: 3500, image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80", hp: 657, seats: 5 },
+            { id: 17, name: "Ferrari Roma", brand: "Ferrari", category: "sports", categoryName: "Sports Car", price: 2800, image: "https://images.unsplash.com/photo-1618843479313-7fd5fcf6b565?auto=format&fit=crop&w=800&q=80", hp: 612, seats: 4 },
+            { id: 18, name: "Rolls Royce Ghost", brand: "Rolls Royce", category: "sedan", categoryName: "Executive Sedan", price: 3800, image: "https://images.unsplash.com/photo-1563720222923-013ac1c0f16d?auto=format&fit=crop&w=800&q=80", hp: 563, seats: 5 },
+            { id: 19, name: "Mercedes-AMG GT Roadster", brand: "Mercedes", category: "supercar", categoryName: "Supercar", price: 2400, image: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80", hp: 523, seats: 2 },
+            { id: 20, name: "Porsche Panamera Turbo", brand: "Porsche", category: "sedan", categoryName: "Executive Sedan", price: 1900, image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80", hp: 620, seats: 4 },
+            { id: 21, name: "Bentley Bentayga V8", brand: "Bentley", category: "luxury-suv", categoryName: "Luxury SUV", price: 3000, image: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80", hp: 542, seats: 5 },
+            { id: 22, name: "Range Rover Autobiography", brand: "Range Rover", category: "luxury-suv", categoryName: "Luxury SUV", price: 2100, image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=800&q=80", hp: 523, seats: 5 },
+            { id: 23, name: "Maserati MC20", brand: "Ferrari", category: "supercar", categoryName: "Supercar", price: 2900, image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80", hp: 621, seats: 2 },
+            { id: 24, name: "Aston Martin DBX707", brand: "Bentley", category: "luxury-suv", categoryName: "Luxury SUV", price: 3300, image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80", hp: 697, seats: 5 },
+            { id: 25, name: "Mercedes S-Class Maybach", brand: "Mercedes", category: "sedan", categoryName: "Executive Sedan", price: 3100, image: "https://images.unsplash.com/photo-1618843479619-f3e1d6c8b0fa?auto=format&fit=crop&w=800&q=80", hp: 496, seats: 4 },
+            { id: 26, name: "Porsche Taycan Turbo S", brand: "Porsche", category: "sports", categoryName: "Sports Car", price: 2200, image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80", hp: 750, seats: 4 },
+            { id: 27, name: "McLaren 720S Spider", brand: "Ferrari", category: "supercar", categoryName: "Supercar", price: 3900, image: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&q=80", hp: 710, seats: 2 },
+            { id: 28, name: "Rolls Royce Dawn", brand: "Rolls Royce", category: "supercar", categoryName: "Supercar", price: 4200, image: "https://images.unsplash.com/photo-1563720222923-013ac1c0f16d?auto=format&fit=crop&w=800&q=80", hp: 563, seats: 4 },
+            { id: 29, name: "BMW X7 M50i", brand: "Mercedes", category: "luxury-suv", categoryName: "Luxury SUV", price: 1600, image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80", hp: 523, seats: 7 },
+            { id: 30, name: "Chevrolet Corvette Z06", brand: "Porsche", category: "sports", categoryName: "Sports Car", price: 2300, image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80", hp: 670, seats: 2 },
+            { id: 31, name: "Audi RS6 Avant", brand: "Audi", category: "sedan", categoryName: "Executive Sedan", price: 2400, image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=800&q=80", hp: 591, seats: 5 },
+            { id: 32, name: "Nissan Patrol Platinum", brand: "Nissan", category: "luxury-suv", categoryName: "Luxury SUV", price: 1100, image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80", hp: 400, seats: 8 }
         ];
 
-        let currentCategory = 'all';
-        let searchQuery = '';
+        // Optimized Super-Fast Lazy/Infinite Scroll State
+        let currentDisplayedCount = 12;
+        const pageSize = 10;
+        let currentActiveList = [...fleetData];
 
-        // Render fleet cards on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderFleet(fleetData);
-
-            // Mobile Menu toggle listener
-            const menuBtn = document.getElementById('mobile-menu-btn');
+        // Section / View switcher
+        function showSection(sectionId) {
+            document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+            if (sectionId === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (sectionId === 'admin') {
+                document.getElementById('view-admin').classList.remove('hidden');
+                renderAdminTable();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
             const mobileMenu = document.getElementById('mobile-menu');
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-        });
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
 
-        // Render function
-        function renderFleet(cars) {
+        // Render fleet cards instantly without lag
+        function renderFleet(cars, resetScroll = false) {
+            currentActiveList = cars;
+            if (resetScroll) {
+                currentDisplayedCount = Math.min(12, cars.length);
+            }
+
             const grid = document.getElementById('fleet-grid');
             const noResults = document.getElementById('no-results');
-            const carCount = document.getElementById('car-count');
+            const countSpan = document.getElementById('car-count');
+            const totalSpan = document.getElementById('car-total-count');
             
             grid.innerHTML = '';
-            carCount.textContent = cars.length;
+            totalSpan.textContent = cars.length;
 
             if (cars.length === 0) {
                 noResults.classList.remove('hidden');
+                countSpan.textContent = 0;
+                document.getElementById('scroll-loading').classList.add('hidden');
                 return;
             } else {
                 noResults.classList.add('hidden');
             }
 
-            cars.forEach(car => {
-                // WhatsApp prefilled message for each car
-                const waMessage = encodeURIComponent(`Hello AAD Rental Cars, I am interested in renting the ${car.name} (${car.price} AED/day). Please let me know availability.`);
-                const waLink = `https://wa.me/971501234567?text=${waMessage}`;
+            const visibleCars = cars.slice(0, currentDisplayedCount);
+            countSpan.textContent = visibleCars.length;
 
+            const t = translations[currentLang];
+
+            visibleCars.forEach(car => {
                 const card = document.createElement('div');
-                card.className = "bg-dark-900 rounded-2xl border border-dark-800 card-hover overflow-hidden flex flex-col justify-between group";
+                card.className = "bg-dark-900 rounded-3xl overflow-hidden border border-dark-800 card-hover flex flex-col justify-between";
                 card.innerHTML = `
                     <div>
-                        <div class="relative overflow-hidden aspect-[16/10] bg-dark-800">
-                            <span class="absolute top-3 left-3 z-10 bg-dark-900/80 backdrop-blur-md text-gold-400 text-xs font-semibold px-3 py-1.5 rounded-lg border border-dark-700 uppercase tracking-wider">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="${car.image}" alt="${car.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x500/171717/eab308?text=AAD+Rental+Car'">
+                            <span class="absolute top-4 left-4 bg-dark-900/80 backdrop-blur-md border border-gold-500/40 text-gold-400 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
                                 ${car.categoryName}
                             </span>
-                            <img src="${car.image}" alt="${car.name}" onerror="this.src='https://placehold.co/800x500/171717/eab308?text=AAD+Rental+Cars'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute bottom-3 right-3 z-10 bg-black/80 backdrop-blur-md text-white px-3 py-1.5 rounded-lg text-sm font-bold border border-dark-700">
-                                <span class="text-gold-400 font-serif">${car.price} AED</span> <span class="text-[10px] text-gray-400 uppercase font-sans">/ day</span>
+                            <div class="absolute bottom-4 right-4 bg-dark-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-dark-700 text-right">
+                                <span class="text-xs text-gray-400 block">${t.starting_from}</span>
+                                <span class="text-gold-400 font-serif font-bold text-base">${car.price} AED</span> <span class="text-xs text-gray-400">/ ${t.day}</span>
                             </div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-xl font-serif font-bold text-white mb-3 group-hover:text-gold-400 transition-colors">${car.name}</h3>
-                            
-                            <!-- Specs badges -->
-                            <div class="grid grid-cols-3 gap-2 py-3 border-y border-dark-800 text-center mb-6">
-                                <div>
-                                    <div class="text-[10px] text-gray-400 uppercase">Power</div>
-                                    <div class="text-xs font-bold text-white mt-0.5">${car.hp}</div>
+                            <div class="text-xs text-gold-500 uppercase tracking-widest font-semibold mb-1">${car.brand || 'Luxury'}</div>
+                            <h3 class="text-xl font-serif font-bold text-white mb-3">${car.name}</h3>
+                            <div class="grid grid-cols-3 gap-2 py-3 border-y border-dark-800 text-xs text-gray-400 mb-6">
+                                <div class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-gauge-high text-gold-500"></i> ${car.hp} HP
                                 </div>
-                                <div class="border-x border-dark-800">
-                                    <div class="text-[10px] text-gray-400 uppercase">Top Speed</div>
-                                    <div class="text-xs font-bold text-white mt-0.5">${car.speed}</div>
+                                <div class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-user-group text-gold-500"></i> ${car.seats} <span data-i18n="seats">Seats</span>
                                 </div>
-                                <div>
-                                    <div class="text-[10px] text-gray-400 uppercase">0-100 km/h</div>
-                                    <div class="text-xs font-bold text-white mt-0.5">${car.acceleration}</div>
+                                <div class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-gear text-gold-500"></i> Auto
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- WhatsApp Button Directly Below Picture/Card -->
-                    <div class="px-6 pb-6 pt-0 space-y-3">
-                        <a href="${waLink}" target="_blank" class="w-full flex items-center justify-center gap-2.5 bg-green-600 hover:bg-green-500 text-white font-semibold py-3 px-4 rounded-xl text-sm transition-all shadow-lg shadow-green-900/30">
-                            <i class="fa-brands fa-whatsapp text-lg"></i> Book via WhatsApp
+                    <div class="px-6 pb-6 pt-0 flex gap-3">
+                        <a href="https://wa.me/971523922504?text=Hello%2C%20I%20would%20like%20to%20book%20the%20${encodeURIComponent(car.name)}" target="_blank" class="flex-1 bg-green-600/20 border border-green-500/40 text-green-400 font-semibold py-3 rounded-xl text-xs text-center hover:bg-green-600 hover:text-white transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-base"></i> ${t.whatsapp}
                         </a>
-                        <button onclick="selectCarForInquiry('${car.name}')" class="w-full bg-dark-800 hover:bg-dark-700 border border-dark-700 text-gray-300 hover:text-white font-medium py-2.5 px-4 rounded-xl text-xs transition-all">
-                            Inquire Form
+                        <button onclick="selectCarForInquiry('${car.name}')" class="flex-1 gold-btn text-black font-bold py-3 rounded-xl text-xs text-center uppercase tracking-wider">
+                            ${t.book_now}
                         </button>
                     </div>
                 `;
                 grid.appendChild(card);
             });
+            populateInquiryDropdown();
+
+            // Toggle scroll loader indicator
+            const loader = document.getElementById('scroll-loading');
+            if (currentDisplayedCount < cars.length) {
+                loader.classList.remove('hidden');
+            } else {
+                loader.classList.add('hidden');
+            }
         }
 
-        // Category Filter logic
-        function filterCategory(cat) {
-            currentCategory = cat;
+        // Ultra-Fast Scroll Listener (Loads instantly without delay)
+        window.addEventListener('scroll', () => {
+            const homeView = document.getElementById('view-home');
+            if (homeView.classList.contains('hidden')) return;
+
+            const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+            if (scrollTop + clientHeight >= scrollHeight - 200) {
+                if (currentDisplayedCount < currentActiveList.length) {
+                    currentDisplayedCount = Math.min(currentDisplayedCount + pageSize, currentActiveList.length);
+                    renderFleet(currentActiveList, false);
+                }
+            }
+        });
+
+        // Filter category buttons
+        function filterCategory(category) {
+            document.getElementById('view-home').classList.remove('hidden');
+            document.getElementById('view-brand').classList.add('hidden');
             
-            // Update active tab styles
             document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.remove('bg-gold-500', 'text-black', 'shadow-lg', 'shadow-gold-500/20');
-                btn.classList.add('bg-dark-800', 'text-gray-300', 'border', 'border-dark-700');
+                if (btn.getAttribute('data-cat') === category) {
+                    btn.classList.remove('bg-dark-800', 'text-gray-300', 'border', 'border-dark-700');
+                    btn.classList.add('bg-gold-500', 'text-black', 'shadow-lg', 'shadow-gold-500/20');
+                } else {
+                    btn.classList.remove('bg-gold-500', 'text-black', 'shadow-lg', 'shadow-gold-500/20');
+                    btn.classList.add('bg-dark-800', 'text-gray-300', 'border', 'border-dark-700');
+                }
             });
-            event.target.classList.remove('bg-dark-800', 'text-gray-300', 'border', 'border-dark-700');
-            event.target.classList.add('bg-gold-500', 'text-black', 'shadow-lg', 'shadow-gold-500/20');
 
-            applyFilters();
+            document.getElementById('reset-filter-btn').classList.remove('hidden');
+            document.getElementById('fleet-heading').textContent = translations[currentLang].fleet_title;
+
+            if (category === 'all') {
+                renderFleet(fleetData, true);
+            } else {
+                const filtered = fleetData.filter(car => car.category === category);
+                renderFleet(filtered, true);
+            }
         }
 
-        // Hero Search / Filter
+        // Filter by Brand (Showroom Company Page)
+        function filterByBrand(brandName) {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-brand').classList.remove('hidden');
+
+            document.getElementById('brand-title').textContent = `${brandName} Collection`;
+            document.getElementById('brand-tag').textContent = `Official ${brandName} Showroom in Dubai`;
+            document.getElementById('brand-desc').textContent = `Explore our exclusive selection of high-performance ${brandName} vehicles available for immediate delivery across Dubai and UAE.`;
+
+            const brandCars = fleetData.filter(car => car.brand && car.brand.toLowerCase() === brandName.toLowerCase());
+            const grid = document.getElementById('brand-fleet-grid');
+            grid.innerHTML = '';
+
+            if (brandCars.length === 0) {
+                grid.innerHTML = `<div class="col-span-3 text-center py-16 text-gray-400">No active ${brandName} models in current fleet. Check back soon or request via WhatsApp!</div>`;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            const t = translations[currentLang];
+
+            brandCars.forEach(car => {
+                const card = document.createElement('div');
+                card.className = "bg-dark-900 rounded-3xl overflow-hidden border border-dark-800 card-hover flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="${car.image}" alt="${car.name}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x500/171717/eab308?text=AAD+Rental+Car'">
+                            <span class="absolute top-4 left-4 bg-dark-900/80 backdrop-blur-md border border-gold-500/40 text-gold-400 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                ${car.categoryName}
+                            </span>
+                            <div class="absolute bottom-4 right-4 bg-dark-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-dark-700 text-right">
+                                <span class="text-xs text-gray-400 block">${t.starting_from}</span>
+                                <span class="text-gold-400 font-serif font-bold text-base">${car.price} AED</span> <span class="text-xs text-gray-400">/ ${t.day}</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-serif font-bold text-white mb-3">${car.name}</h3>
+                            <div class="grid grid-cols-3 gap-2 py-3 border-y border-dark-800 text-xs text-gray-400 mb-6">
+                                <div class="flex items-center gap-1.5"><i class="fa-solid fa-gauge-high text-gold-500"></i> ${car.hp} HP</div>
+                                <div class="flex items-center gap-1.5"><i class="fa-solid fa-user-group text-gold-500"></i> ${car.seats} Seats</div>
+                                <div class="flex items-center gap-1.5"><i class="fa-solid fa-gear text-gold-500"></i> Auto</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0 flex gap-3">
+                        <a href="https://wa.me/971523922504?text=Hello%2C%20I%20would%20like%20to%20book%20the%20${encodeURIComponent(car.name)}" target="_blank" class="flex-1 bg-green-600/20 border border-green-500/40 text-green-400 font-semibold py-3 rounded-xl text-xs text-center hover:bg-green-600 hover:text-white transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-base"></i> ${t.whatsapp}
+                        </a>
+                        <button onclick="selectCarForInquiry('${car.name}'); showSection('home');" class="flex-1 gold-btn text-black font-bold py-3 rounded-xl text-xs text-center uppercase tracking-wider">
+                            ${t.book_now}
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Hero filter logic
         function filterFleetFromHero() {
-            searchQuery = document.getElementById('hero-search-input').value.toLowerCase().trim();
-            const catSelect = document.getElementById('hero-category-select').value;
-            currentCategory = catSelect;
-            applyFilters();
+            const cat = document.getElementById('hero-category-select').value;
+            const searchTerm = document.getElementById('hero-search-input').value.toLowerCase().trim();
 
-            // Scroll smoothly to fleet section
+            let results = fleetData;
+            if (cat !== 'all') {
+                results = results.filter(car => car.category === cat);
+            }
+            if (searchTerm !== '') {
+                results = results.filter(car => car.name.toLowerCase().includes(searchTerm) || (car.brand && car.brand.toLowerCase().includes(searchTerm)));
+            }
+
             document.getElementById('fleet').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('reset-filter-btn').classList.remove('hidden');
+            renderFleet(results, true);
         }
 
-        // Apply both category and text filters
-        function applyFilters() {
-            let filtered = fleetData;
-
-            if (currentCategory !== 'all') {
-                filtered = filtered.filter(car => car.category === currentCategory);
-            }
-
-            if (searchQuery) {
-                filtered = filtered.filter(car => car.name.toLowerCase().includes(searchQuery));
-            }
-
-            renderFleet(filtered);
+        // Populate inquiry dropdown
+        function populateInquiryDropdown() {
+            const selectEl = document.getElementById('inquiry-car');
+            if(!selectEl) return;
+            selectEl.innerHTML = '';
+            fleetData.forEach(car => {
+                const opt = document.createElement('option');
+                opt.value = car.name;
+                opt.textContent = `${car.name} (${car.price} AED/day)`;
+                selectEl.appendChild(opt);
+            });
         }
 
-        // Select car in inquiry form
+        // Quick select car into inquiry form
         function selectCarForInquiry(carName) {
-            const select = document.getElementById('inquiry-car');
-            select.value = carName;
+            const selectEl = document.getElementById('inquiry-car');
+            for (let i = 0; i < selectEl.options.length; i++) {
+                if (selectEl.options[i].value === carName) {
+                    selectEl.selectedIndex = i;
+                    break;
+                }
+            }
             document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-            showToast("Car Selected", `${carName} selected for inquiry form.`);
+            showToast('Vehicle Selected', `You have selected ${carName}. Please complete your inquiry below.`);
         }
 
-        // Handle Form Submission
-        function handleInquiry(event) {
-            event.preventDefault();
+        // Handle inquiry form submit
+        function handleInquiry(e) {
+            e.preventDefault();
             const name = document.getElementById('inquiry-name').value;
-            const phone = document.getElementById('inquiry-phone').value;
-            const car = document.getElementById('inquiry-car').value;
-            const msg = document.getElementById('inquiry-msg').value;
-
-            // Generate WhatsApp redirect from inquiry form
-            const waText = encodeURIComponent(`Hello AAD Rental Cars, my name is ${name} (Phone: ${phone}). I would like to inquire about renting the ${car}. Message: ${msg}`);
-            window.open(`https://wa.me/971501234567?text=${waText}`, '_blank');
-
-            showToast("Inquiry Sent!", "Redirecting you to WhatsApp with your reservation details.");
+            showToast('Inquiry Sent Successfully!', `Thank you ${name}. Our VIP concierge will contact you via WhatsApp shortly.`);
             document.getElementById('inquiry-form').reset();
         }
 
-        // Newsletter subscription
-        function subscribeNewsletter() {
-            showToast("Subscribed!", "Thank you for subscribing to AAD VIP updates.");
+        // ADMIN PANEL FUNCTIONS
+        function openAdminLoginModal() {
+            document.getElementById('admin-login-modal').classList.remove('hidden');
+        }
+        function closeAdminLoginModal() {
+            document.getElementById('admin-login-modal').classList.add('hidden');
+            document.getElementById('admin-pass-input').value = '';
+        }
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('admin-pass-input').value;
+            if (pass === 'ADAD2894') {
+                closeAdminLoginModal();
+                showSection('admin');
+                showToast('Welcome Admin', 'Logged into owner dashboard successfully.');
+            } else {
+                showToast('Access Denied', 'Incorrect password. Password is ADAD2894', true);
+            }
+        }
+        function logoutAdmin() {
+            showSection('home');
+            showToast('Logged Out', 'Successfully exited admin panel.');
         }
 
-        // Toast Notification helper
-        function showToast(title, desc) {
+        function renderAdminTable() {
+            const tbody = document.getElementById('admin-table-body');
+            document.getElementById('admin-total-cars').textContent = fleetData.length;
+            tbody.innerHTML = '';
+
+            fleetData.forEach(car => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-dark-800/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-4">
+                        <img src="${car.image}" alt="${car.name}" class="w-16 h-12 object-cover rounded-xl border border-dark-700" onerror="this.src='https://placehold.co/100x80/171717/eab308?text=Car'">
+                    </td>
+                    <td class="p-4 font-bold text-white">${car.name}</td>
+                    <td class="p-4">
+                        <span class="px-2.5 py-1 rounded-lg bg-dark-800 text-gold-400 text-xs border border-dark-700">${car.brand || 'Luxury'}</span>
+                    </td>
+                    <td class="p-4 font-semibold text-gold-400">${car.price} AED</td>
+                    <td class="p-4 text-gray-400">${car.hp} HP</td>
+                    <td class="p-4 text-center flex items-center justify-center gap-2">
+                        <button onclick="openEditModal(${car.id})" class="bg-gold-500/20 text-gold-400 border border-gold-500/40 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-gold-500 hover:text-black transition-all">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteCar(${car.id})" class="bg-red-500/20 text-red-400 border border-red-500/40 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-red-500 hover:text-white transition-all">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Add Car Modal
+        function openAddCarModal() {
+            document.getElementById('add-car-form').reset();
+            document.getElementById('add-car-modal').classList.remove('hidden');
+        }
+        function closeAddCarModal() {
+            document.getElementById('add-car-modal').classList.add('hidden');
+        }
+
+        function saveNewCar(e) {
+            e.preventDefault();
+            const name = document.getElementById('add-car-name').value;
+            const brand = document.getElementById('add-car-brand').value;
+            const category = document.getElementById('add-car-cat').value;
+            const price = parseFloat(document.getElementById('add-car-price').value);
+            const hp = parseInt(document.getElementById('add-car-hp').value);
+            const fileInput = document.getElementById('add-car-file');
+
+            let catName = "Supercar";
+            if(category === 'luxury-suv') catName = "Luxury SUV";
+            else if(category === 'sedan') catName = "Executive Sedan";
+            else if(category === 'sports') catName = "Sports Car";
+
+            const reader = new FileReader();
+            if (fileInput.files && fileInput.files[0]) {
+                reader.onload = function(event) {
+                    const imageUrl = event.target.result;
+                    const newCar = {
+                        id: Date.now(),
+                        name,
+                        brand,
+                        category,
+                        categoryName: catName,
+                        price,
+                        hp,
+                        seats: 4,
+                        image: imageUrl
+                    };
+                    fleetData.unshift(newCar);
+                    closeAddCarModal();
+                    renderAdminTable();
+                    renderFleet(fleetData, true);
+                    showToast('Car Added', `${name} has been successfully added to the fleet!`);
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        // Edit Car Modal
+        function openEditModal(carId) {
+            const car = fleetData.find(c => c.id === carId);
+            if(!car) return;
+
+            document.getElementById('edit-car-id').value = car.id;
+            document.getElementById('edit-car-name').value = car.name;
+            document.getElementById('edit-car-brand').value = car.brand || 'Lamborghini';
+            document.getElementById('edit-car-cat').value = car.category;
+            document.getElementById('edit-car-price').value = car.price;
+            document.getElementById('edit-car-hp').value = car.hp;
+            document.getElementById('edit-car-file').value = '';
+
+            document.getElementById('edit-car-modal').classList.remove('hidden');
+        }
+        function closeEditModal() {
+            document.getElementById('edit-car-modal').classList.add('hidden');
+        }
+
+        function saveCarEdit(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('edit-car-id').value);
+            const name = document.getElementById('edit-car-name').value;
+            const brand = document.getElementById('edit-car-brand').value;
+            const category = document.getElementById('edit-car-cat').value;
+            const price = parseFloat(document.getElementById('edit-car-price').value);
+            const hp = parseInt(document.getElementById('edit-car-hp').value);
+            const fileInput = document.getElementById('edit-car-file');
+
+            let catName = "Supercar";
+            if(category === 'luxury-suv') catName = "Luxury SUV";
+            else if(category === 'sedan') catName = "Executive Sedan";
+            else if(category === 'sports') catName = "Sports Car";
+
+            const carIndex = fleetData.findIndex(c => c.id === id);
+            if (carIndex !== -1) {
+                const updateData = (imgUrl) => {
+                    fleetData[carIndex] = {
+                        ...fleetData[carIndex],
+                        name,
+                        brand,
+                        category,
+                        categoryName: catName,
+                        price,
+                        hp,
+                        image: imgUrl || fleetData[carIndex].image
+                    };
+                    closeEditModal();
+                    renderAdminTable();
+                    renderFleet(fleetData, true);
+                    showToast('Updated Successfully', `${name} details updated instantly!`);
+                };
+
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        updateData(event.target.result);
+                    }
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    updateData(null);
+                }
+            }
+        }
+
+        // Delete Car Function
+        function deleteCar(carId) {
+            const car = fleetData.find(c => c.id === carId);
+            if (confirm(`Are you sure you want to delete ${car ? car.name : 'this car'} from the fleet?`)) {
+                fleetData = fleetData.filter(c => c.id !== carId);
+                renderAdminTable();
+                renderFleet(fleetData, true);
+                showToast('Car Deleted', 'Vehicle removed from fleet catalog successfully.');
+            }
+        }
+
+        // Toast notification helper
+        function showToast(title, desc, isError = false) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-title').textContent = title;
             document.getElementById('toast-desc').textContent = desc;
-            
-            toast.classList.5remove ? toast.classList.remove('translate-y-32', 'opacity-0') : toast.classList.remove('translate-y-32', 'opacity-0');
+
+            toast.classList.remove('translate-y-32', 'opacity-0');
             setTimeout(() => {
                 toast.classList.add('translate-y-32', 'opacity-0');
             }, 4000);
         }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Initial render on load
+        window.onload = function() {
+            renderFleet(fleetData, true);
+        };
     </script>
 </body>
 </html>
